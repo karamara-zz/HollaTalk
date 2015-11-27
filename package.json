@@ -1,0 +1,28 @@
+{
+  "name": "holla_talk",
+  "version": "1.0.0",
+  "description": "Messenger app that uses mongoDB as database, node.js as backend server, and socket.io to communicate with iOS app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karamara/HollaTalk.git"
+  },
+  "keywords": [
+    "holla",
+    "messanger",
+    "ios",
+    "talk",
+    "mean",
+    "app"
+  ],
+  "author": "Sung Kang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karamara/HollaTalk/issues"
+  },
+  "homepage": "https://github.com/karamara/HollaTalk#readme"
+}
