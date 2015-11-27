@@ -24,5 +24,13 @@
   "bugs": {
     "url": "https://github.com/karamara/HollaTalk/issues"
   },
-  "homepage": "https://github.com/karamara/HollaTalk#readme"
+  "homepage": "https://github.com/karamara/HollaTalk#readme",
+  "dependencies": {
+    "angular": "^1.4.8",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "mongoose": "^4.2.8",
+    "path": "^0.12.7",
+    "socket.io": "^1.3.7"
+  }
 }
