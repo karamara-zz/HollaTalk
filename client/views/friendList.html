@@ -1,0 +1,16 @@
+<html ng-app="hollaApp">
+<head>
+  <title>Holla Talk</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  <script type="text/javascript" src = "../static/factories.js"></script>
+  <script type="text/javascript" src = "../static/controllers.js"></script>
+</head>
+<body ng-controller="usersController as userCtrl">
+  <h1>Add a User</h1>
+  <form>
+    <input type="text" ng-model="userCtrl.newUser.name" placeholder="name">
+    <input type="text" ng-model="userCtrl.newUser.phoneNumber" placeholder="phoneNumber">
+    <input type="submit" ng-click="userCtrl.addUser()">
+  </form>
+</body>
+</html>
