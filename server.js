@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 app.set('port', (process.env.PORT || 7000));
 app.use(express.static(path.join(__dirname,'client')));
 require('./config/mongoose.js');
