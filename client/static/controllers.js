@@ -15,5 +15,8 @@
       UserFactory.newFriend(this.newFriend, function(){
         // do something when added friend like refreshing the friend list.
       })
-    }
+    };
+    // this.getFriendListByUserName = function(userName){
+    // }
+    
   })
