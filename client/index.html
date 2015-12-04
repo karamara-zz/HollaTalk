@@ -14,5 +14,19 @@
     <input type="text" ng-model="userCtrl.newUser.phoneNumber" placeholder="phoneNumber">
     <input type="submit" ng-click="userCtrl.addUser()">
   </form>
+  <form>
+    <h1> add friend </h1>
+    <input type="text" ng-model = "userCtrl.newFriend.phoneNumber" placeholder = "phone number">
+    <input type="submit" ng-click='userCtrl.addFriend()'>
+  </form>
+  <div ng-show='userCtrl.friendsList'>
+    <div ng-repeat="friend in userCtrl.friendsList">
+      <p ng-bind = "friend.name"></p>
+      <button ng-click="userCtrl.startChat(friend.phoneNumber)">Chat</button>
+    </div>
+  </div>
+  <div ng-show='userCtrl.chatRoomStatus'>
+    chat room
+  </div>
 </body>
 </html>

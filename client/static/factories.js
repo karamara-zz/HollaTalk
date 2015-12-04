@@ -11,10 +11,19 @@
 
     }
     factory.newFriend = function(newFriend, callback){
+      console.log("new friend addding sending the post request", newFriend)
       $http.post('/newFriend', newFriend).success(function(res){
         console.log("new friend adding", newFriend)
+        console.log(res, "response")
         callback()
       });
+    }
+    factory.showFriends = function( user, callback){
+      console.log("sending request to server to find firends list for user", user);
+      $http.get('/friendsList/'+user).success(function(res){
+        console.log("get back the friend list");
+        callback(res);
+      })
     }
     return factory;
   })
