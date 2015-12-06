@@ -1,0 +1,11 @@
+
+
+    <div ng-repeat="friend in userCtrl.friendsList">
+      <p ng-bind = "friend.name"></p>
+      <button ng-click="userCtrl.startChat(friend.phoneNumber)">Chat</button>
+    </div>
+  <form>
+    <h1> add friend </h1>
+    <input type="text" ng-model = "userCtrl.newFriend.phoneNumber" placeholder = "phone number">
+    <input type="submit" ng-click='userCtrl.addFriend()'>
+  </form>

@@ -1,20 +1,32 @@
 
-  hollaApp.controller('usersController', function(UserFactory) {
+  hollaApp.controller('usersController', function(UserFactory, socket, ChatroomFactory) {
     console.log("controller kicks in here")
-
-
     this.friendsList = ["sdfasd"]
     var _this = this;
+    ///////temporary place holder value for testing
+    this.user = {
+      name: "sung",
+      phoneNumber: 3107453637
+    }
+    ////
     this.chatRoomStatus = false;
-    this.user = {name: "sung",
-    phoneNumber : 3107453637}
     var self = this
-    this.addUser = function() {
-      console.log("add friends", this.newUser)
-      UserFactory.addUser(this.newUser, function(friends) {
-        // console.log("added friedns")
+    console.log("socket")
+    socket.on('connect', function(data){
+      console.log("connected", socket.id)
+    })
+    socket.on('receiver', function(data){
+      console.log("emit", data)
+    })
+    this.login = function() {
+      user = this.user
+      console.log("add user", this.user)
+      UserFactory.logIn(this.user, function(res) {
+        console.log("added friedns")
+        _this.user = res;
+        _this.showFriends(_this.user.phoneNumber);
+        socket.emit("updateSocketID", res);
       });
-      this.newUser = {};
     };
     this.showFriends = function(user){
       console.log("fetching friends for ", user);
@@ -29,17 +41,33 @@
     this.startChat = function(friend){
       console.log(friend);
       _this.chatRoomStatus = true;
+      ChatroomFactory.startChatroom(friend, function(res){
+        console.log('starting the chat')
+      })
+      socket.emit("startedChat", {friend: friend})
     }
     this.addFriend = function(){
       console.log("new friend adding from controller triggered", this.newFriend)
       var friendAdding = this.user;
       friendAdding.friendPhoneNumber = this.newFriend.phoneNumber
       UserFactory.newFriend(friendAdding, function(){
-        // do something when added friend like refreshing the friend list.
+        // do something when added friend like 
+        // refreshing the friend list.
+        console.log(this.user, "showfing friends with uer")
+      _this.showFriends(this.user.phoneNumber);
+
       })
       this.newFriend = {};
     };
     // this.getFriendListByUserName = function(userName){
     // }
-    this.showFriends(this.user.phoneNumber);
   })
+hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
+  //controller for chat room
+  this.test = "dsfdf";
+  this.sendMessage = function(){
+    console.log(this.message);
+    this.message = "";
+  }
+  console.log()
+})

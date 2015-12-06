@@ -1,32 +1,24 @@
 <html ng-app="hollaApp">
 <head>
   <title>Holla Talk</title>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type='text/javascript' src='/static/lib/angular.js'></script>
+  <script type='text/javascript' src='/static/lib/angular-route.js'></script>
   <script type="text/javascript" src = "../static/factories.js"></script>
+  <script type="text/javascript" src = "../static/routes.js"></script>
   <script type="text/javascript" src = "../static/controllers.js"></script>
   <link rel="shortcut icon" href="./../../icons/favicon.ico" type="image/x-icon">
   <link rel="icon" href="./../../icons/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../static/css/styles.css">
 </head>
 <body ng-controller="usersController as userCtrl">
-  <h1>Add a User</h1>
+<div ng-view=''>
+<!--   <h1 ng-hide = 'true'> Add a User</h1>
   <form>
     <input type="text" ng-model="userCtrl.newUser.name" placeholder="name">
     <input type="text" ng-model="userCtrl.newUser.phoneNumber" placeholder="phoneNumber">
     <input type="submit" ng-click="userCtrl.addUser()">
-  </form>
-  <form>
-    <h1> add friend </h1>
-    <input type="text" ng-model = "userCtrl.newFriend.phoneNumber" placeholder = "phone number">
-    <input type="submit" ng-click='userCtrl.addFriend()'>
-  </form>
-  <div ng-show='userCtrl.friendsList'>
-    <div ng-repeat="friend in userCtrl.friendsList">
-      <p ng-bind = "friend.name"></p>
-      <button ng-click="userCtrl.startChat(friend.phoneNumber)">Chat</button>
-    </div>
-  </div>
-  <div ng-show='userCtrl.chatRoomStatus'>
-    chat room
-  </div>
+  </form> -->
+</div>
 </body>
 </html>

@@ -1,0 +1,12 @@
+<div id='chatroom'>
+	<h1>Chat with the friend</h1>
+	<div class='container'>
+		<div id="messages">
+			<p ng-bind="chatCtrl.test"></p>
+		</div>
+		<form>
+			<input type="text" name = "message" ng-model="chatCtrl.message">
+			<button ng-click="chatCtrl.sendMessage()">Send</button>
+		</form>
+	</div>
+</div>

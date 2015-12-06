@@ -7,8 +7,8 @@ module.exports = (function() {
 		User.findOne({phoneNumber : req.body.phoneNumber}, function(err, user){
 			console.log("checking if the user already exist")
 			if (user){
-				console.log("users already exists")
-				res.json({status: false, error: "user already exists"})
+				console.log("users already exists",user)
+				res.json(user)
 			} else if (err) {
 				console.log("there is error finding the user");
 				res.json({statis: false, error: err});
@@ -24,7 +24,7 @@ module.exports = (function() {
 						console.log("there was error saving the user")
 					} else {
 						console.log("no error saving")
-						res.json({status: true})
+						res.json(newUser)
 						// pass back the status equal to true to confirm that saving was completed without error
 					}
 				})
@@ -34,16 +34,33 @@ module.exports = (function() {
 	},
 	show: function(req,res){
 		console.log("fetching friend list for "+ req.params.userPhoneNumber);
-		User.findOne({phonNumber: req.params.userPhoneNUmber})
+		var userNumber = req.params.userPhoneNumber
+		User.findOne({phoneNumber: userNumber})
 		.populate('friends')
 		.exec(function (err, friendsList){
 			if (err){
 				console.log("there was error populating friendsList");
 			} else {
-				console.log("friends list successfully populated");
+				console.log("friends list successfully populated", friendsList);
 				res.json(friendsList);
 			}
 		})
+
+	},
+	find: function(data, socket){
+		console.log("finding the friend who user wants to talk", data);
+		User.findOne({phoneNumber: data.friend}, function(err, friend){
+			if (err){
+				console.log("there was error")
+			} else {
+				console.log(
+					"friend found ", friend)
+				socket.emit("receiver",friend);
+			}
+		})
+	},
+	updateSocketID: function(data){
+		console.log(data);
 
 	},
 	addFriend: function(req, res){
