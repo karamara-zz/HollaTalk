@@ -1,10 +1,33 @@
-#messages {
-	border: 1px solid black;
-	width: 70%;
-	height: 600px;
-	overflow: scroll;
+.login{
+	margin-top: 100px;
 }
-::-webkit-scrollbar {
+#messageContainer {
+	color: black;
+	padding: 10px;
+	background-color: white;
+	border-radius: 20px;
+}
+	#messages {
+		width: 70%;
+		height: 600px;
+		color: black;
+
+	}
+input:focus {
+border-bottom: 1px solid #e65100 !important;
+box-shadow: 0 1px 0 0 #e65100 !important;
+}
+
+/*.input{
+	background-color: white;
+	border-radius: 10px;
+}*/
+body{
+	color:white;
+	background-color: rgb(58,77,128);
+}
+
+/*::-webkit-scrollbar {
       width: 15px;
 } /* this targets the default scrollbar (compulsory) */
 ::-webkit-scrollbar-track {
@@ -22,3 +45,4 @@
 ::-webkit-scrollbar-corner {
       background-color: black;
 } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
+*/

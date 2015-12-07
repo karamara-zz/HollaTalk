@@ -2,23 +2,40 @@
 <head>
   <title>Holla Talk</title>
   <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script type='text/javascript' src='/static/lib/angular.js'></script>
-  <script type='text/javascript' src='/static/lib/angular-route.js'></script>
-  <script type="text/javascript" src = "../static/factories.js"></script>
-  <script type="text/javascript" src = "../static/routes.js"></script>
-  <script type="text/javascript" src = "../static/controllers.js"></script>
+  <script type='text/javascript' src='/static/js/lib/angular.js'></script>
+  <script type='text/javascript' src='/static/js/lib/angular-route.js'></script>
+  <script type='text/javascript' src='/static/js/lib/jquery-1.11.3.js'></script>
+  <script type='text/javascript' src='/static/js/lib/materialize.js'></script>
+  <script type="text/javascript" src = "../static/js/factories.js"></script>
+  <script type="text/javascript" src = "../static/js/socketFactory.js"></script>
+  <script type="text/javascript" src = "../static/js/routes.js"></script>
+  <script type="text/javascript" src = "../static/js/controllers.js"></script>
   <link rel="shortcut icon" href="./../../icons/favicon.ico" type="image/x-icon">
   <link rel="icon" href="./../../icons/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="../static/css/lib/materialize.css">
 </head>
 <body ng-controller="usersController as userCtrl">
-<div ng-view=''>
-<!--   <h1 ng-hide = 'true'> Add a User</h1>
-  <form>
-    <input type="text" ng-model="userCtrl.newUser.name" placeholder="name">
-    <input type="text" ng-model="userCtrl.newUser.phoneNumber" placeholder="phoneNumber">
-    <input type="submit" ng-click="userCtrl.addUser()">
-  </form> -->
+<div class = 'container row'>
+  <div ng-hide="userCtrl.user" class="col s4 offset-s4 login">
+    <form name="loginForm">
+      Enter your Name<br>
+      <input type="text" ng-model = 'userCtrl.newUser.name'
+        ng-required="true"><br>
+      Enter your phone number<br>
+      <input type="text" ng-model = 'userCtrl.newUser.phoneNumber' 
+        ng-required="true"
+        ng-minlength='10'
+        maxlength='10'><br>
+      <button ng-click='userCtrl.login()' ng-hide='loginForm.$invalid' class="waves-effect waves-light btn orange darken-4">Log-in</button>
+    </form>
+    <!-- this will dissapear if passes validation -->
+    <div ng-show='loginForm.$invalid'>
+      <p>The phone number has to be 10 digits</p>
+    </div>
+  </div>
+  <div ng-view='' ng-show='userCtrl.user'>
+  </div>
 </div>
 </body>
 </html>

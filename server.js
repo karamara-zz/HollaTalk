@@ -26,6 +26,13 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('updateSocketID', function(data){
 		data.cSocketID = socket.id;
+		console.log(data);
 		users.updateSocketID(data)
+	});
+	socket.on('disconnect', function(){
+		users.disconnectSocket(socket.id);
+	});
+	socket.on('sendMessage', function(sendTo){
+		console.log("sendmessage")
 	})
 })

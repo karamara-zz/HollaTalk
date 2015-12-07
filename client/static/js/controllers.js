@@ -1,10 +1,10 @@
 
   hollaApp.controller('usersController', function(UserFactory, socket, ChatroomFactory) {
     console.log("controller kicks in here")
-    this.friendsList = ["sdfasd"]
+    this.friendsList;
     var _this = this;
     ///////temporary place holder value for testing
-    this.user = {
+    this.newUser = {
       name: "sung",
       phoneNumber: 3107453637
     }
@@ -19,6 +19,7 @@
       console.log("emit", data)
     })
     this.login = function() {
+      this.user = this.newUser
       user = this.user
       console.log("add user", this.user)
       UserFactory.logIn(this.user, function(res) {
@@ -40,11 +41,13 @@
     };
     this.startChat = function(friend){
       console.log(friend);
-      _this.chatRoomStatus = true;
       ChatroomFactory.startChatroom(friend, function(res){
-        console.log('starting the chat')
+        console.log('starting the chat with', friend)
+        if (friend.cSocketID){
+          ChatroomFactory.sendTo = friend.cSocketID
+        }
       })
-      socket.emit("startedChat", {friend: friend})
+      socket.emit("startedChat", friend)
     }
     this.addFriend = function(){
       console.log("new friend adding from controller triggered", this.newFriend)
@@ -67,6 +70,9 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
   this.test = "dsfdf";
   this.sendMessage = function(){
     console.log(this.message);
+    ChatroomFactory.sendMessage(this.message, function(res){
+      console.log("went to factory")
+    })
     this.message = "";
   }
   console.log()
