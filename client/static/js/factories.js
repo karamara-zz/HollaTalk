@@ -29,7 +29,8 @@
       // console.log("adding", newUser)
       $http.post('/newUser', newUser).success(function(res){
         _this.user = res
-        // console.log("success", res)
+        user = res;
+        console.log("success", res)
 
         callback(res);
       });

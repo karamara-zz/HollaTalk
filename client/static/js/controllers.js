@@ -7,36 +7,41 @@
     this.newUser = {
       name: "sung",
       phoneNumber: 3107453637
-    }
+    };
     ////
     this.chatRoomStatus = false;
     var self = this
-    console.log("socket")
     socket.on('connect', function(data){
       console.log("connected", socket.id)
     })
     socket.on('receiver', function(data){
       console.log("emit", data)
     })
+    socket.on('updateFriendList', function(){
+      console.log("a friend logged in updating friend list now")
+      _this.showFriends(_this.user.phoneNumber)
+    })
     this.login = function() {
       this.user = this.newUser
-      user = this.user
       console.log("add user", this.user)
       UserFactory.logIn(this.user, function(res) {
         console.log("added friedns")
         _this.user = res;
         _this.showFriends(_this.user.phoneNumber);
-        socket.emit("updateSocketID", res);
+        socket.emit("updateSocketID", _this.friendsList);
+
       });
     };
     this.showFriends = function(user){
       console.log("fetching friends for ", user);
       UserFactory.showFriends(user, function(res){
         console.log(res);
+        _this.user = res
         _this.friendsList = res.friends
         // do something when got the firend list
         // if you use "this" here, it refers to factory, you need to refer controller
         console.log(_this.friendsList)
+
       })
     };
     this.startChat = function(friend){
@@ -67,12 +72,21 @@
   })
 hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
   //controller for chat room
+  socket.on('message', function(message){
+    console.log("message", message);
+  })
   this.test = "dsfdf";
   this.sendMessage = function(){
     console.log(this.message);
     ChatroomFactory.sendMessage(this.message, function(res){
-      console.log("went to factory")
-    })
+    });
+    this.message.sendTo = ChatroomFactory.sendTo
+    var messageData = {
+      message: this.message,
+      sendTo: ChatroomFactory.sendTo,
+      sentFrom: user
+    }
+    socket.emit("sendMessageToServer", messageData)
     this.message = "";
   }
   console.log()

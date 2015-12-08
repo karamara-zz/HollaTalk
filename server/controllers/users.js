@@ -47,17 +47,25 @@ module.exports = (function() {
 		})
 
 	},
-	find: function(data, socket){
-		// console.log("finding the friend who user wants to talk", data);
-		User.findOne({phoneNumber: data.friend}, function(err, friend){
-			if (err){
-				// console.log("there was error")
-			} else {
-				// console.log("friend found ", friend)
-				socket.emit("receiver",friend);
-			}
-		})
-	},
+	// find: function(data, socket, io){
+	// 	// console.log("finding the friend who user wants to talk", data);
+	// 	User.findOne({phoneNumber: data.phoneNumber})
+	// 		.populate('friends')
+	// 		.exec(function(err, user){
+	// 		if (err){
+	// 			// console.log("there was error")
+	// 		} else {
+	// 			console.log("user found ", user)
+	// 			// socket.emit("receiver",friend);
+	// 			for (var friend = 0; friend < user.friends.length; friend++){
+	// 				if (user.friends[friend].cSocketID){
+	// 					io.sockets.connected[user.friends[friend].cSocketID].emit('updateFriendList')
+	// 				}
+	// 				console.log(1, user.friends[friend].cSocketID)
+	// 			}
+	// 		}
+	// 	})
+	// },
 	updateSocketID: function(data){
 		// console.log(data);
 		// User.findOne({phoneNumber:data.phoneNumber}, function(err, user){
@@ -75,7 +83,6 @@ module.exports = (function() {
 		// 		})
 		// 	}
 		// })
-		
 		//trying to use update
 		//
 		User.update({phoneNumber:data.phoneNumber}, {cSocketID: data.cSocketID}, function(err, user){

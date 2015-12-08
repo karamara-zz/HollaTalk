@@ -24,15 +24,34 @@ io.sockets.on('connection', function(socket){
 		// console.log(receiver);
 		// io.sockets.emit('receiver',xxx);
 	});
-	socket.on('updateSocketID', function(data){
-		data.cSocketID = socket.id;
-		console.log(data);
-		users.updateSocketID(data)
-	});
+	// socket.on('updateSocketID', function(data){
+	// 	data.cSocketID = socket.id;
+	// 	console.log(data);
+	// 	users.updateSocketID(data);
+	// 	for (var friend = 0; friend < data.friends.length; friend++){
+
+	// 		if (data.friends[friend].cSocketID){
+	// 			var friendSocketID = data.friends[friend].cSocketID;
+	// 			console.log("emitting to friend", friendSocketID)
+	// 			if (io.sockets.connected[friendSocketID]){
+	// 				console.log("emitting")
+	// 				io.sockets.connected[friendSocketID].emit('updateFriendList')
+	// 			}
+	// 		}
+	// 		console.log(1, data.friends[friend].cSocketID, friend, data.friends.length)
+
+	// 	}
+	// });
 	socket.on('disconnect', function(){
 		users.disconnectSocket(socket.id);
 	});
-	socket.on('sendMessage', function(sendTo){
-		console.log("sendmessage")
+	socket.on('sendMessageToServer', function(data){
+		console.log("sendmessage",data)
+		if(data.sendTo){
+			if (io.sockets.connected[data.sendTo]){
+				io.sockets.connected[data.sendTo].emit('message', data);
+			}
+		}
+
 	})
 })
