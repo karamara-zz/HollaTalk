@@ -17,22 +17,29 @@
     socket.on('receiver', function(data){
       console.log("emit", data)
     })
-    socket.on('updateFriendList', function(){
-      console.log("a friend logged in updating friend list now")
-      _this.showFriends(_this.user.phoneNumber)
+    socket.on('updateFriendList', function(data){
+      console.log("a friend logged in updating friend list now", _this.user.friends);
+      _this.friendsList = _this.user.friends;
+      console.log("friend list updated to ", _this.friendsList)
+
     })
     this.login = function() {
       this.user = this.newUser
       console.log("add user", this.user)
-      UserFactory.logIn(this.user, function(res) {
-        console.log("added friedns")
+      UserFactory.logIn(this.user
+        , function(res) {
+        console.log("fdsfadfdsfsdfdsf",res)
         _this.user = res;
-        _this.showFriends(_this.user.phoneNumber);
-        socket.emit("updateSocketID", _this.friendsList);
+        console.log("this dot user updated", _this.user)
+        user = res;
+        _this.showFriends(_this.user.phoneNumber, function(){
+                  console.log("emitting to socket to update socktID")
+                  socket.emit("updateSocketID", _this.user);
+        });
 
       });
     };
-    this.showFriends = function(user){
+    this.showFriends = function(user, callback){
       console.log("fetching friends for ", user);
       UserFactory.showFriends(user, function(res){
         console.log(res);
@@ -41,7 +48,7 @@
         // do something when got the firend list
         // if you use "this" here, it refers to factory, you need to refer controller
         console.log(_this.friendsList)
-
+        callback();
       })
     };
     this.startChat = function(friend){
@@ -84,10 +91,9 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
     var messageData = {
       message: this.message,
       sendTo: ChatroomFactory.sendTo,
-      sentFrom: user
+      sentFrom: user.cSocketID
     }
     socket.emit("sendMessageToServer", messageData)
     this.message = "";
   }
-  console.log()
 })

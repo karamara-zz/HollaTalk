@@ -24,31 +24,34 @@ io.sockets.on('connection', function(socket){
 		// console.log(receiver);
 		// io.sockets.emit('receiver',xxx);
 	});
-	// socket.on('updateSocketID', function(data){
-	// 	data.cSocketID = socket.id;
-	// 	console.log(data);
-	// 	users.updateSocketID(data);
-	// 	for (var friend = 0; friend < data.friends.length; friend++){
+	socket.on('updateSocketID', function(data){
+		data.cSocketID = socket.id;
+		console.log(data, "data");
+		users.updateSocketID(data, function(){
+			for (var friend = 0; friend < data.friends.length; friend++){
 
-	// 		if (data.friends[friend].cSocketID){
-	// 			var friendSocketID = data.friends[friend].cSocketID;
-	// 			console.log("emitting to friend", friendSocketID)
-	// 			if (io.sockets.connected[friendSocketID]){
-	// 				console.log("emitting")
-	// 				io.sockets.connected[friendSocketID].emit('updateFriendList')
-	// 			}
-	// 		}
-	// 		console.log(1, data.friends[friend].cSocketID, friend, data.friends.length)
+				if (data.friends[friend].cSocketID){
+					var friendSocketID = data.friends[friend].cSocketID;
+					console.log("emitting to friend", friendSocketID)
+					if (io.sockets.connected[friendSocketID]){
+						console.log("emitting")
+						io.sockets.connected[friendSocketID].emit('updateFriendList', data)
+					}
+				}
+				console.log(1, data.friends[friend].cSocketID, friend, data.friends.length)
 
-	// 	}
-	// });
+			}
+		});
+
+	});
 	socket.on('disconnect', function(){
 		users.disconnectSocket(socket.id);
 	});
 	socket.on('sendMessageToServer', function(data){
-		console.log("sendmessage",data)
+		console.log("sendmessage",data,"from socket id ",socket.id)
 		if(data.sendTo){
 			if (io.sockets.connected[data.sendTo]){
+				console.log("really emitting the message to ", data.sendTo)
 				io.sockets.connected[data.sendTo].emit('message', data);
 			}
 		}

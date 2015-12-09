@@ -16,7 +16,7 @@
       callback()
     }
     factory.sendMessage = function(message){
-      console.log(message, this.sendTo, "send message factory")
+      console.log(message,"sending to", this.sendTo, "send message factory")
     }
     return factory;
   })
@@ -27,11 +27,9 @@
     var _this = this;
     factory.logIn = function(newUser, callback) {
       // console.log("adding", newUser)
-      $http.post('/newUser', newUser).success(function(res){
+      $http.post('/logIn', newUser).success(function(res){
         _this.user = res
-        user = res;
         console.log("success", res)
-
         callback(res);
       });
     }
@@ -42,9 +40,6 @@
         console.log(res, "response")
         callback()
       });
-    }
-    factory.login = function(number, callback){
-
     }
     factory.showFriends = function( user, callback){
       console.log("sending request to server to find firends list for user", user);
