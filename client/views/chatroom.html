@@ -5,7 +5,7 @@
 	<h1>Chat with the friend</h1>
 	<div id='messageContainer'>
 		<div id="messages">
-			<div ng-repeat="message in chatCtrl.conversation">
+			<div ng-repeat="message in chatCtrl.conversation" class = "row message">
 				<p ng-bind = "message.message" class = {{message.from}}></p>
 			</div>
 		</div>

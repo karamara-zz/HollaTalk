@@ -9,20 +9,34 @@
 	color: black;
 	padding: 10px;
 	background-color: white;
-	border-radius: 20px;
+	border-radius: 10px;
 }
 	#messages {
-		width: 70%;
-		height: 600px;
+		position: relative;
+		height: 300px;
 		color: black;
+		overflow: scroll;
 
 	}
 	.friend {
-		color: green;
+		background-color: #e65100;
+		padding: 5px;
+		float: left;
+		margin-left: 10px;
+	}
+	.message{
+		color: white;
 	}
 	.self{
-		color: red;
+		border-radius: 2px;
+		padding: 5px;
+		background-color: rgb(58,77,128);
+		float: right;
+		margin-right: 10px;
 	}
+#online{
+	color: #289C3E;
+}
 input:focus {
 border-bottom: 1px solid #e65100 !important;
 box-shadow: 0 1px 0 0 #e65100 !important;
