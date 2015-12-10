@@ -4,10 +4,14 @@
 //   window.location.href="#/";
 // }
 // above three lines disabled for testing
-  hollaApp.factory('ChatroomFactory', function($http, $location){
+  hollaApp.factory('ChatroomFactory', function($http, $location, socket){
     console.log("chatroomFactory loading");
     var _this = this;
     var factory = {}
+    socket.on('receiver', function(data){
+      console.log("emit", data);
+      _this.sendTo = data.cSocketID;
+    })
     factory.showChat = function(conversation, callback){
       console.log("send http request to get conversation with the friend and user using friend's phonenumber");
     }
@@ -17,6 +21,7 @@
     }
     factory.sendMessage = function(message){
       console.log(message,"sending to", this.sendTo, "send message factory")
+      
     }
     return factory;
   })
@@ -43,7 +48,7 @@
     }
     factory.showFriends = function( user, callback){
       console.log("sending request to server to find firends list for user", user);
-      $http.get('/friendsList/'+user).success(function(res){
+      $http.get('/friendsList/'+ user).success(function(res){
         console.log("get back the friend list", res);
         callback(res);
        // $location.path('/');

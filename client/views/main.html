@@ -2,6 +2,7 @@
 <div ng-show="userCtrl.user">
     <div ng-repeat="friend in userCtrl.friendsList">
       <p ng-bind = "friend.name"></p>
+      <p ng-show = "friend.cSocketID"> online </p>
       <button ng-click="userCtrl.startChat(friend)" class="waves-effect waves-light btn orange darken-4">Chat</button>
     </div>
   <form>

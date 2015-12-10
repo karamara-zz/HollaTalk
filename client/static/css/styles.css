@@ -17,6 +17,12 @@
 		color: black;
 
 	}
+	.friend {
+		color: green;
+	}
+	.self{
+		color: red;
+	}
 input:focus {
 border-bottom: 1px solid #e65100 !important;
 box-shadow: 0 1px 0 0 #e65100 !important;

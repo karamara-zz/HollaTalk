@@ -14,13 +14,13 @@
     socket.on('connect', function(data){
       console.log("connected", socket.id)
     })
-    socket.on('receiver', function(data){
-      console.log("emit", data)
-    })
     socket.on('updateFriendList', function(data){
       console.log("a friend logged in updating friend list now", _this.user.friends);
-      _this.friendsList = _this.user.friends;
-      console.log("friend list updated to ", _this.friendsList)
+      _this.showFriends(_this.user.phoneNumber, function(){
+        console.log("friend list updated to ", _this.friendsList)
+      })
+      // _this.friendsList = _this.user.friends;
+
 
     })
     this.login = function() {
@@ -79,8 +79,13 @@
   })
 hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
   //controller for chat room
+  var _this = this
+  this.conversation = [''];
   socket.on('message', function(message){
     console.log("message", message);
+    message.from = "friend";
+    _this.conversation.push(message)
+    console.log(_this.conversation);
   })
   this.test = "dsfdf";
   this.sendMessage = function(){
@@ -94,6 +99,8 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
       sentFrom: user.cSocketID
     }
     socket.emit("sendMessageToServer", messageData)
+    messageData.from = "self";
+    _this.conversation.push(messageData);
     this.message = "";
   }
 })

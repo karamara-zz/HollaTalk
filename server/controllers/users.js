@@ -108,6 +108,18 @@ module.exports = (function() {
 
 					} else {
 						console.log("Socket disconnected");
+						for (var friend = 0; friend < userData.friends.length; friend++){
+
+							if (userData.friends[friend].cSocketID){
+								var friendSocketID = userData.friends[friend].cSocketID;
+								console.log("emitting to friend", friendSocketID)
+								if (io.sockets.connected[friendSocketID]){
+									console.log("emitting")
+									io.sockets.connected[friendSocketID].emit('updateFriendList', userData)
+								}
+							}
+							console.log(1, userData.friends[friend].cSocketID, friend, userData.friends.length)
+						}
 					}
 				})
 			} else {

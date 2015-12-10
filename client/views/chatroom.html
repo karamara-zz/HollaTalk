@@ -5,7 +5,9 @@
 	<h1>Chat with the friend</h1>
 	<div id='messageContainer'>
 		<div id="messages">
-			<p ng-bind="chatCtrl.test"></p>
+			<div ng-repeat="message in chatCtrl.conversation">
+				<p ng-bind = "message.message" class = {{message.from}}></p>
+			</div>
 		</div>
 		<form novalidate>
 			<input type="text" name = "message" ng-model="chatCtrl.message" ng-required="true" formnovalidate autocomplete="off">

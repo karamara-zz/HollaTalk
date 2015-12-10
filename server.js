@@ -39,7 +39,6 @@ io.sockets.on('connection', function(socket){
 					}
 				}
 				console.log(1, data.friends[friend].cSocketID, friend, data.friends.length)
-
 			}
 		});
 
