@@ -9,6 +9,10 @@ var UserSchema = new mongoose.Schema({
 	friends: [{
 			type: Schema.Types.ObjectId,
 			ref: 'User'
-		}]
+		}],
+	chatrooms: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Chatroom'
+	}]
 });
 mongoose.model('User',UserSchema);

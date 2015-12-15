@@ -5,13 +5,21 @@ module.exports = function(app){
 	app.post('/logIn', function(req,res){
 		console.log("post to new user", req.body)
 		users.create(req, res)
-	} );
+	});
 	app.post('/newFriend', function(req, res){
 		console.log("post to add new friend", req.body);
 		users.addFriend(req,res)
-	})
+	});
 	app.get('/friendsList/:userPhoneNumber', function(req,res){
 		console.log("tyring to fetch friends list for user", req.params);
 		users.show(req,res);
-	})
+	});
+	app.post('/newChatroom', function(req, res){
+		console.log("new chatroom is being created");
+		chatrooms.create(req, res);
+	});
+	app.post('/newMessage', function(req, res){
+		console.log("new message is being updated");
+		chatrooms.update(req, res);
+	});
 }

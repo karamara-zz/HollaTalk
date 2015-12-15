@@ -20,8 +20,18 @@
       callback()
     }
     factory.sendMessage = function(message){
-      console.log(message,"sending to", this.sendTo, "send message factory")
-      
+      console.log(message,"sending to", this.sendTo, "send message factory");
+      var newMessage ;
+      if (!this.chatroomId){
+        newMessage = {
+          sentFrom: this.userId,
+          sendTo: this.sendTo,
+          message: message
+        };
+        $http.post('/newChatroom', message).success(function(res){
+          _this.chatroomId = res._id;
+        })
+      }
     }
     return factory;
   })
@@ -43,6 +53,7 @@
       $http.post('/newFriend', newFriend).success(function(res){
         console.log("new friend adding", newFriend)
         console.log(res, "response")
+       $location.path('/');
         callback()
       });
     }

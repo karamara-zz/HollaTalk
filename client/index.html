@@ -19,7 +19,7 @@
 <body ng-controller="usersController as userCtrl">
 <div class = 'container row'>
   <div ng-hide="userCtrl.user" class="col s4 offset-s4 login">
-    <form name="loginForm">
+    <form name="loginForm" >
       Enter your Name<br>
       <input type="text" ng-model = 'userCtrl.newUser.name'
         ng-required="true"><br>
@@ -27,15 +27,22 @@
       <input type="text" ng-model = 'userCtrl.newUser.phoneNumber' 
         ng-required="true"
         ng-minlength='10'
-        maxlength='10'><br>
-      <button ng-click='userCtrl.login()' ng-hide='loginForm.$invalid' class="waves-effect waves-light btn orange darken-4">Log-in</button>
+        maxlength='10'
+        required><br>
+      <button ng-click='userCtrl.login()' ng-disabled='loginForm.$invalid' class="waves-effect waves-light btn orange darken-4">Log-in</button>
     </form>
     <!-- this will dissapear if passes validation -->
     <div ng-show='loginForm.$invalid'>
       <p>The phone number has to be 10 digits</p>
     </div>
-  </div>
-  <div ng-view='' ng-show='userCtrl.user'>
+  </div> <!-- it will only show if the user is not logged in -->
+  <div ng-show='userCtrl.user'>
+    <div id="header" class ="row">
+      <a class = "col s2 waves-effect waves-light btn orange darken-4" href="#/">Friend List</a>
+      <a class = "col s2 offset-s2 waves-effect waves-light btn orange darken-4" href="#/addFriend">Add friend</a>
+    </div>
+    <div ng-view="">
+    </div>
   </div>
 </div>
 </body>
