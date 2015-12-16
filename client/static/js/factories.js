@@ -22,30 +22,36 @@
     factory.sendMessage = function(message){
       console.log(message,"sending to", this.sendTo, "send message factory");
       var newMessage ;
-      if (!this.chatroomId){
-        newMessage = {
-          sentFrom: this.userId,
-          sendTo: this.sendTo,
-          message: message
-        };
-        $http.post('/newChatroom', message).success(function(res){
-          _this.chatroomId = res._id;
-        })
-      }
+      console.log(this.user.Id)
+
     }
     return factory;
   })
   hollaApp.factory('UserFactory', function($http, $location) {
     console.log("factory at work")
     var factory = {};
-    factory.user;
     var _this = this;
+    factory.session = function(callback){
+        $http.get('/session').success(function(res){
+          console.log(res);
+          if(res.user){
+            factory.setUser(res.user);
+            callback();
+            $location.path('#/main');
+          }
+        })
+      }
     factory.logIn = function(newUser, callback) {
       // console.log("adding", newUser)
       $http.post('/logIn', newUser).success(function(res){
-        _this.user = res
+        if (res){
+        factory.setUser(res);
         console.log("success", res)
         callback(res);
+        console.log(res.session, "here is the session")
+      } else {
+        console.log("invalid user")
+      }
       });
     }
     factory.newFriend = function(newFriend, callback){
@@ -64,6 +70,17 @@
         callback(res);
        // $location.path('/');
       })
+    }
+    factory.logout = function(callback){
+      this.user = undefined
+      $location.path('#/')
+      callback()
+    }
+    factory.getUser = function(){
+      return this.user
+    }
+    factory.setUser = function(user){
+      this.user = user;
     }
     return factory;
   })

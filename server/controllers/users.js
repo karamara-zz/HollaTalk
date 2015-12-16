@@ -2,21 +2,24 @@ var mongoose = require('mongoose');
 var User = mongoose.model("User");
 module.exports = (function() {
 	return {
-	create : function(req,res){
+	create : function(req, res){
 		// it will check if user's phone number already exist and returns error message if they do
+		console.log(req.body)
 		User.findOne({phoneNumber : req.body.phoneNumber}, function(err, user){
 			// console.log("checking if the user already exist")
 			if (user){
 				// console.log("users already exists",user)
+				req.session.user = user;
+				console.log(req.session);
+				user.session = req.session
 				res.json(user)
+
 			} else if (err) {
 				// console.log("there is error finding the user");
 				res.json({statis: false, error: err});
 			}else {
 				// console.log(req.body);
 				var newUser = new User(req.body)
-				newUser.created_at = Date.now();
-				newUser.updated_at = Date.now();
 				newUser.save(function(err){
 					if (err){
 						// what will do if eror occurs
@@ -30,7 +33,6 @@ module.exports = (function() {
 				})
 			}
 		})
-
 	},
 	show: function(req,res){
 		// console.log("fetching friend list for "+ req.params.userPhoneNumber);
@@ -130,6 +132,7 @@ module.exports = (function() {
 	addFriend: function(req, res){
 		// console.log("adding "+ req.body.friendPhoneNumber+ " as a friend of "+ req.body.phoneNumber) ; 
 		User.findOne({phoneNumber: req.body.friendPhoneNumber}, function(err, friend){
+			console.log("////////////////////////////////////////", req.session)
 			// console.log(friend, "friend returned by finding one");
 			if (err || friend === null){
 				// console.log("there was error")
@@ -154,6 +157,9 @@ module.exports = (function() {
 				})
 			}
 		})
+	},
+	session: function(req, res){
+		res.json(req.session)
 	}
 }
 })()

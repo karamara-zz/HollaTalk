@@ -1,9 +1,18 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var UserSchema = new mongoose.Schema({
-	created_at: Date,
-	updated_at: Date,
-	name: String,
+	created_at: {
+		type:Date,
+		default: Date.now
+	},
+	updated_at: {
+		type:Date,
+		default: Date.now
+	},
+	name: {
+		type: String,
+		trim: true
+	},
 	cSocketID: String,
 	phoneNumber: Number,
 	friends: [{
@@ -16,3 +25,5 @@ var UserSchema = new mongoose.Schema({
 	}]
 });
 mongoose.model('User',UserSchema);
+UserSchema.path('phoneNumber').required(true);
+UserSchema.path('name').required(true);

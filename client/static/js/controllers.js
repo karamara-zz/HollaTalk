@@ -1,28 +1,17 @@
 
-  hollaApp.controller('usersController', function(UserFactory, socket, ChatroomFactory) {
-    console.log("controller kicks in here")
-    this.friendsList;
+  hollaApp.controller('loginController', function(UserFactory){
     var _this = this;
+    // if there is session, then loggs user in
+    UserFactory.session(function(){
+      _this.user = UserFactory.getUser();
+      console.log("session", this.user)
+    });
     ///////temporary place holder value for testing
     this.newUser = {
       name: "sung",
       phoneNumber: 3107453637
     };
     ////
-    this.chatRoomStatus = false;
-    var self = this
-    socket.on('connect', function(data){
-      console.log("connected", socket.id)
-    })
-    socket.on('updateFriendList', function(data){
-      console.log("a friend logged in updating friend list now", _this.user.friends);
-      _this.showFriends(_this.user.phoneNumber, function(){
-        console.log("friend list updated to ", _this.friendsList)
-      })
-      // _this.friendsList = _this.user.friends;
-
-
-    })
     this.login = function() {
       this.user = this.newUser
       console.log("add user", this.user)
@@ -39,6 +28,23 @@
 
       });
     };
+  })
+  hollaApp.controller('usersController', function(UserFactory, socket, ChatroomFactory) {
+    _this.user = UserFactory.getUser();
+    console.log("controller kicks in here", this.user)
+    this.friendsList;
+    var _this = this;
+    socket.on('connect', function(data){
+      console.log("connected", socket.id)
+    })
+    socket.on('updateFriendList', function(data){
+      console.log("a friend logged in updating friend list now", _this.user.friends);
+      _this.showFriends(_this.user.phoneNumber, function(){
+        console.log("friend list updated to ", _this.friendsList)
+      })
+      // _this.friendsList = _this.user.friends;
+    })
+
     this.showFriends = function(user, callback){
       console.log("fetching friends for ", user);
       UserFactory.showFriends(user, function(res){
@@ -76,8 +82,14 @@
     };
     // this.getFriendListByUserName = function(userName){
     // }
+    this.logout = function(){
+      console.log("logging out");
+      UserFactory.logout(function(){
+        _this.user = undefined;
+      });
+    }
   })
-hollaApp.controller('chatroomController', function(ChatroomFactory, socket){
+hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory, socket){
   //controller for chat room
   var _this = this
   this.conversation = [''];

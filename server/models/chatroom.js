@@ -1,8 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var chatroomSchema = new mongoose.Schema({
-	created_at: Date,
-	updated_at: Date,
+	created_at: {
+		type:Date,
+		default: Date.now
+	},
+	updated_at: {
+		type:Date,
+		default: Date.now
+	},
 	users: [{
 		type: Schema.Types.ObjectId,
 		ref: "User"
@@ -14,6 +20,7 @@ var chatroomSchema = new mongoose.Schema({
 
 });
 mongoose.model('Chatroom',chatroomSchema);
+chatroomSchema.path('messages').required(true);
 
 
 //chat room that will save messages. it i will have two to many relationship with user. 
