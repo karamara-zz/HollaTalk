@@ -27,6 +27,13 @@
     }
     return factory;
   })
+  hollaApp.factory('CreateFactory', function($http, $location){
+    var factory = {};
+    factory.login = function(){
+      $location.path('/');
+    }
+    return factory;
+  })
   hollaApp.factory('UserFactory', function($http, $location) {
     console.log("factory at work")
     var factory = {};
@@ -37,14 +44,17 @@
           if(res.user){
             factory.setUser(res.user);
             callback();
-            $location.path('#/main');
+            $location.path('/main');
           }
         })
       }
+    factory.create = function(){
+      $location.path('/create');
+    }
     factory.logIn = function(loginInfo, callback) {
       console.log("logging in", loginInfo)
       $http.post('/logIn', loginInfo).success(function(res){
-        if (res){
+        if (res.status == true){
         factory.setUser(res);
         console.log("success", res)
         callback(res);

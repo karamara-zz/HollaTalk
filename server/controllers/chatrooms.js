@@ -31,7 +31,7 @@ module.exports = (function(){
 						}
 					})
 					var newMessage = {
-						req.body.message,
+						message: req.body.message,
 						created_at: Date.now()
 					};
 					var chatroomData = {
@@ -53,11 +53,12 @@ module.exports = (function(){
 		}, //end of the create method
 		update: function(req, res){
 			// need req.body to contain { chatroomId : _id , message: String , sender: String(user id)}
+			console.log("updating the chatroom id ", req.params);
 			var newMessage = {
 				sender: req.body.sender,
 				message: req.body.message
 			}
-			Chatroom.findOne({_id : req.body.chatroomId}, function(err, chatroom){
+			Chatroom.findOne({_id : req.params}, function(err, chatroom){
 				if (err) {
 					console.log("there was error finding chatroom");
 				} else {

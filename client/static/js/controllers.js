@@ -1,4 +1,11 @@
-
+hollaApp.controller('createController', function(CreateFactory){
+  this.newUser = function(createInfo){
+  }
+  this.login = function(){
+    CreateFactory.login()
+  }
+})
+  
   hollaApp.controller('loginController', function(UserFactory){
     var _this = this;
     console.log("login controller on")
@@ -14,6 +21,9 @@
       password: "dkdkdkdkdk"
     };
     console.log(this.loginInfo.phoneNumber)
+    this.create = function(){
+      UserFactory.create()
+    }
     ////
     this.login = function(info) {
       UserFactory.logIn(info, function(res) {
@@ -21,21 +31,19 @@
         _this.user = res;
         console.log("this dot user updated", _this.user)
         user = res;
-        _this.showFriends(_this.user.phoneNumber, function(){
-                  console.log("emitting to socket to update socktID")
-                  socket.emit("updateSocketID", _this.user);
-        });
+        // _this.showFriends(_this.user.phoneNumber, function(){
+        //           console.log("emitting to socket to update socktID")
+        //           socket.emit("updateSocketID", _this.user);
+        // });
 
       });
     };// end of login method
     this.newUser = function(info){
       UserFactory.newUser(info, function(res){
         console.log("adding new user");
-        if ()
-        _this.login(info)
       })
-    }
-  })
+    }// end of new user method
+}) // end of login controller
   // hollaApp.controller('usersController', function(UserFactory, socket, ChatroomFactory) {
   //     var _this = this;
   //   console.log("controller kicks in here", this.user);
@@ -121,3 +129,4 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory,
     this.message = "";
   }
 })
+

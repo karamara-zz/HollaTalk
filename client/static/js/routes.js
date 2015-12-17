@@ -5,6 +5,11 @@ hollaApp.config(function($routeProvider){
 		controller: "loginController",
 		controllerAs: 'loginCtrl'
 	})
+	.when('/create',{
+		templateUrl: 'views/create.html',
+		controller: "createController",
+		controllerAs: 'createCtrl'
+	})
 	.when('/main', {
 		templateUrl:'views/main.html',
 		controller: 'userController',
