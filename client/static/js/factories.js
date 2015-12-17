@@ -41,9 +41,9 @@
           }
         })
       }
-    factory.logIn = function(newUser, callback) {
-      // console.log("adding", newUser)
-      $http.post('/logIn', newUser).success(function(res){
+    factory.logIn = function(loginInfo, callback) {
+      console.log("logging in", loginInfo)
+      $http.post('/logIn', loginInfo).success(function(res){
         if (res){
         factory.setUser(res);
         console.log("success", res)

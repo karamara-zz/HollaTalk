@@ -19,6 +19,6 @@ hollaApp.config(function($routeProvider){
 		templateUrl:'views/addFriend.html'
 	})
 	.otherwise({
-		templateUrl:'views/main.html'
+		templateUrl:'views/login.html'
 	})
 })

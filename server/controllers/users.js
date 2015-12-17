@@ -47,7 +47,21 @@ module.exports = (function() {
 				res.json(friendsList);
 			}
 		})
-
+	},
+	logIn: function(req, res){
+		console.log(req.body);
+		User.findOne({phoneNumber : req.body.phoneNumber, password: req.body.password}, function(err, user){
+			if (user) {
+				req.session.user = user;
+				console.log(req.session);
+				user.session = req.session
+				res.json({status: true, response: user});
+			} else if (err){
+				res.json({status: false, error: err});
+			} else {
+				res.json({status: false, error: "login credencial doesn't match the database."})
+			}
+		})
 	},
 	find: function(data, socket){
 		// console.log("finding the friend who user wants to talk", data);

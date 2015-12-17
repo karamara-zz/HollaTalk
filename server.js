@@ -12,6 +12,8 @@ app.use(session({
 	resave: false,
 	saveUninitialized: true
 }))
+
+
 app.set('port', (process.env.PORT || 7000));
 app.use(express.static(path.join(__dirname,'client')));
 require('./config/mongoose.js');
