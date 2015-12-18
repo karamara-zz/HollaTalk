@@ -5,37 +5,37 @@
       <input type="text" ng-model = 'createCtrl.createInfo.name'
         ng-required="true"><br>
       Enter your phone number<br>
-      <input type="text" ng-model = 'createCtrl.createInfo.phoneNumber' 
+      <input type="text" ng-model = 'createCtrl.createInfo.phoneNumber'
         name="phoneNumber"
         ng-required="true"
         ng-minlength='10'
         maxlength='10'
         required><br>
       Enter your password<br>
-      <input type="password" ng-model = 'createCtrl.createInfo.password' 
+      <input type="password" ng-model = 'createCtrl.createInfo.password'
         name ="password"
         ng-required="true"
         ng-minlength='2'
         required><br>
       Verify your Pasword<br>
-      <input type="password" ng-model = 'createCtrl.createInfo.password' 
+      <input type="password" ng-model = 'createCtrl.createInfo.passwordV'
         name ="passwordV"
         ng-required="true"
         ng-minlength='2'
         required><br>
-      <button ng-click='createCtrl.newUser()' ng-disabled='createForm.$invalid' class="waves-effect waves-light btn orange darken-4">Create</button><br>
+      <button ng-click='createCtrl.newUser(createCtrl.createInfo)' ng-disabled='createForm.$invalid' class="waves-effect waves-light btn orange darken-4">Create</button><br>
     </form>
       <br>
       <button ng-click='createCtrl.login()' class="waves-effect waves-light btn orange lighten-1">Back to Log-In</button>
     <br>
     <!-- this will dissapear if passes validation -->
-    <div ng-show='loginForm.phoneNumber.$invalid'>
+    <div ng-show='createForm.phoneNumber.$invalid'>
       <p>The phone number has to be 10 digits.</p>
     </div>
-    <div ng-show='loginForm.password.$invalid'>
+    <div ng-show='createForm.password.$invalid'>
       <p>The password has to be more than 2 digits.</p>
     </div>
-    <div ng-show='loginForm.passwordV.$invalid'>
+    <div ng-show='createForm.passwordV.$invalid'>
       <p>The password has to be more than 2 digits.</p>
     </div>
   </div> <!-- it will only show if the user is not logged in -->

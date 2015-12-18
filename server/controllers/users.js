@@ -8,14 +8,14 @@ module.exports = (function() {
 		User.findOne({phoneNumber : req.body.phoneNumber}, function(err, user){
 			// console.log("checking if the user already exist")
 			if (user){
-				// console.log("users already exists",user)
+				console.log("users already exists",user)
 				req.session.user = user;
 				console.log(req.session);
 				user.session = req.session
-				res.json(user)
+				res.json({status: false, error: "The phone number already registered in our database"})
 			} else if (err) {
-				// console.log("there is error finding the user");
-				res.json({statis: false, error: err});
+				console.log("there is error finding the user", err);
+				res.json({status: false, error: err});
 			}else {
 				// console.log(req.body);
 				var newUser = new User(req.body)
@@ -26,7 +26,7 @@ module.exports = (function() {
 						// console.log("there was error saving the user")
 					} else {
 						// console.log("no error saving")
-						res.json(newUser)
+						res.json({status: true})
 						// pass back the status equal to true to confirm that saving was completed without error
 					}
 				})
@@ -48,17 +48,29 @@ module.exports = (function() {
 		})
 	},
 	logIn: function(req, res){
-		console.log(req.body);
-		User.findOne({phoneNumber : req.body.phoneNumber, password: req.body.password}, function(err, user){
+		console.log(req.body, "in users controller");
+		User.findOne({phoneNumber : req.body.phoneNumber}, function(err, user){
 			if (user) {
-				req.session.user = user;
-				console.log(req.session);
-				user.session = req.session
-				res.json({status: true, response: user});
+				if (user.password == req.body.password){
+					req.session.user = user;
+					console.log(req.session, "valid log in sending back the user object with session included");
+					user = {
+						name : user.name,
+						phoneNumber : user.phoneNumber,
+						_id : user._id
+					}
+					console.log("removed password", user)
+					res.json({status: true, user: user});
+				} else {
+					console.log("password doesn't match");
+					res.json({status: false, error: "login credencial doesn't match the database."})
+				}
 			} else if (err){
+				console.log(err, "error retrieving user information for login")
 				res.json({status: false, error: err});
 			} else {
-				res.json({status: false, error: "login credencial doesn't match the database."})
+				console.log("there was no user")
+				res.json({status: false, error: "there was no user found on the database"})
 			}
 		})
 	},

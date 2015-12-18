@@ -31,6 +31,17 @@
     var factory = {};
     factory.login = function(){
       $location.path('/');
+    };
+    factory.create = function(info, callback){
+      $http.post('/users', info).success(function(res){
+        console.log(res);
+        if (res.status == false){
+          callback(res.error);
+        } else {
+          //later on it will automatically logs in the user
+          $location.path('/');
+        }
+      })
     }
     return factory;
   })
@@ -55,10 +66,10 @@
       console.log("logging in", loginInfo)
       $http.post('/logIn', loginInfo).success(function(res){
         if (res.status == true){
-        factory.setUser(res);
-        console.log("success", res)
-        callback(res);
-        console.log(res.session, "here is the session")
+          factory.setUser(res.user);
+          console.log("success", res.user)
+          callback(res.user);
+          $location.path('/main');
       } else {
         console.log("invalid user")
       }
@@ -90,6 +101,7 @@
       return this.user
     }
     factory.setUser = function(user){
+      window.user = user;
       this.user = user;
     }
     return factory;

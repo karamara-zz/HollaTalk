@@ -13,6 +13,9 @@ var UserSchema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
+	password:{
+		type:String
+	},
 	cSocketID: String,
 	phoneNumber: Number,
 	friends: [{
@@ -26,4 +29,5 @@ var UserSchema = new mongoose.Schema({
 });
 mongoose.model('User',UserSchema);
 UserSchema.path('phoneNumber').required(true);
+UserSchema.path('password').required(true);
 UserSchema.path('name').required(true);

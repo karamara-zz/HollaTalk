@@ -8,10 +8,7 @@ module.exports = function(app){
 	// app.get('/',function(req,res){
 	// 	console.log("home");
 	// })
-	app.post('/logIn', function(req,res){
-		console.log("logging in", req.body, req.session)
-		users.logIn(req, res)
-	});
+
 	app.get('/session', function(req, res){
 		console.log("post request for session called", req.body);
 		users.session(req, res);
@@ -43,16 +40,19 @@ module.exports = function(app){
 	// 	users.update(request, response)
 	// });
 
-	// .post('/users', function(request, response) {
-	// 	users.create(request, response)
-	// });
+	app.post('/users', function(request, response) {
+		users.create(request, response)
+	});
 	// .put('/users/:id', function(req, res){
 	// 	//update the user information won't use it for now.
 	// });
 	app.delete('users/:id', function(req, res) {
 		// delete the user available when admin feature is built
 	});
-
+	app.post('/logIn', function(req,res){
+		console.log("logging in", req.body, req.session);
+		users.logIn(req, res);
+	});
 	// chat room routes
 	app.post('/chatroom', function(req, res){
 		console.log("new chatroom is being created");

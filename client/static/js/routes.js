@@ -1,9 +1,7 @@
 hollaApp.config(function($routeProvider){
 	$routeProvider
 	.when('/',{
-		templateUrl:'views/login.html',
-		controller: "loginController",
-		controllerAs: 'loginCtrl'
+		templateUrl:'views/login.html'
 	})
 	.when('/create',{
 		templateUrl: 'views/create.html',
@@ -12,8 +10,8 @@ hollaApp.config(function($routeProvider){
 	})
 	.when('/main', {
 		templateUrl:'views/main.html',
-		controller: 'userController',
-		controllerAs: 'userCtrl'
+		controller: 'usersController',
+		controllerAs: 'usersCtrl'
 	})
 	.when('/chatroom',{
 		templateUrl:'views/chatroom.html',
