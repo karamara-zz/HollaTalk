@@ -13,14 +13,20 @@ module.exports = function(app){
 		console.log("post request for session called", req.body);
 		users.session(req, res);
 	})
-	app.post('/friends/new/:id', function(req, res){
-		console.log("post to add new friend", req.body, req.params);
-		friends.create(req,res)
-	});
-	app.get('/friendsList/:userPhoneNumber', function(req,res){
-		console.log("tyring to fetch friends list for user", req.params);
+
+	//friends routes
+	//
+	app.get('/friends/:id', function(req,res){
 		friends.show(req,res);
 	});
+	app.post('/friends/new/:id', function(req, res){
+		console.log("post to add new friend", req.body, req.params.id);
+		friends.create(req,res)
+	});
+	app.delete('/friends/:id', function(req, res) {
+		// delete a friend from the user's friends list
+	});
+
 
 	// user routes
     // Index

@@ -25,13 +25,6 @@ hollaApp.controller('createController', function(CreateFactory){
       _this.user = UserFactory.getUser();
       console.log("session", this.user)
     });
-    ///////temporary place holder value for testing
-    this.loginInfo = {
-      phoneNumber: 3107453637,
-      password: "dkdkdkdkdk"
-    };
-    console.log(this.loginInfo.phoneNumber)
-
     // it will load partial for create a  new user
     this.create = function(){
       UserFactory.create()
@@ -47,6 +40,12 @@ hollaApp.controller('createController', function(CreateFactory){
         //           socket.emit("updateSocketID", _this.user);
         // });
       });
+    this.logout = function(){
+      console.log("logging out");
+      UserFactory.logout(function(){
+        _this.user = undefined;
+      });
+    }
     };// end of login method
     this.newUser = function(info){
       UserFactory.newUser(info, function(res){
@@ -58,6 +57,7 @@ hollaApp.controller('createController', function(CreateFactory){
       var _this = this;
     this.user = window.user
     console.log("controller kicks in here", this.user);
+
     socket.on('connect', function(){
       console.log("Socket connected")
     })
@@ -68,18 +68,22 @@ hollaApp.controller('createController', function(CreateFactory){
       })
       // _this.friendsList = _this.user.friends;
     })
-    this.showFriends = function(user, callback){
-      console.log("fetching friends for ", user);
-      UserFactory.showFriends(user, function(res){
+    this.showFriends = function(userId){
+      console.log("fetching friends for id", userId);
+      UserFactory.showFriends(userId, function(res){
         console.log(res);
-        _this.user = res
         _this.friendsList = res.friends
         // do something when got the firend list
         // if you use "this" here, it refers to factory, you need to refer controller
         console.log(_this.friendsList)
-        callback();
+        _this.updateSocketId()
       })
     };
+    this.showFriends(this.user._id)
+    this.updateSocketId = function(){
+      console.log("emitting to socket to update socktID", this.user)
+      socket.emit("updateSocketID", this.friendsList);
+    }
     this.startChat = function(friend){
       console.log(friend);
       ChatroomFactory.startChatroom(friend, function(res){
@@ -92,25 +96,17 @@ hollaApp.controller('createController', function(CreateFactory){
     }
     this.addFriend = function(){
       console.log("new friend adding from controller triggered", this.newFriend)
-      var friendAdding = this.user;
-      friendAdding.friendPhoneNumber = this.newFriend.phoneNumber
-      UserFactory.newFriend(friendAdding, function(){
+      UserFactory.newFriend(this.newFriend, function(){
         // do something when added friend like 
         // refreshing the friend list.
         console.log(this.user, "showfing friends with uer")
-      _this.showFriends(this.user.phoneNumber);
+      _this.showFriends(this.user._id);
 
       })
       this.newFriend = {};
     };
     // this.getFriendListByUserName = function(userName){
     // }
-    this.logout = function(){
-      console.log("logging out");
-      UserFactory.logout(function(){
-        _this.user = undefined;
-      });
-    }
   })
 hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory, socket){
   //controller for chat room

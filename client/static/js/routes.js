@@ -19,7 +19,9 @@ hollaApp.config(function($routeProvider){
 		controllerAs:'chatCtrl'
 	})
 	.when('/addFriend',{
-		templateUrl:'views/addFriend.html'
+		templateUrl:'views/addFriend.html',
+		controller: 'usersController',
+		controllerAs: 'usersCtrl'
 	})
 	.otherwise({
 		templateUrl:'views/login.html'

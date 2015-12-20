@@ -30,18 +30,21 @@ io.sockets.on('connection', function(socket){
 	socket.on('updateSocketID', function(data){
 		data.cSocketID = socket.id;
 		console.log(data, "data");
-		users.updateSocketID(data, function(){
-			for (var friend = 0; friend < data.friends.length; friend++){
 
-				if (data.friends[friend].cSocketID){
-					var friendSocketID = data.friends[friend].cSocketID;
-					console.log("emitting to friend", friendSocketID)
+		// this will update the socket Id in the databas and emit to all the users' friend to update their friend online list.
+		users.updateSocketID(data, function(){
+			console.log(data, "updating socket id of user in user's friends",data.length)
+			for (var idx = 0; idx < data.length; idx++){
+				console.log("for loop",data[0])
+				if (data[idx].cSocketID){
+					console.log("ifstatement")
+					var friendSocketID = data[idx].cSocketID;
+					console.log("emitting to idx", friendSocketID)
 					if (io.sockets.connected[friendSocketID]){
 						console.log("emitting")
 						io.sockets.connected[friendSocketID].emit('updateFriendList', data)
 					}
 				}
-				console.log(1, data.friends[friend].cSocketID, friend, data.friends.length)
 			}
 		});
 

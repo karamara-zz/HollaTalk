@@ -77,16 +77,20 @@
     }
     factory.newFriend = function(newFriend, callback){
       console.log("new friend addding sending the post request", newFriend)
-      $http.post('/newFriend', newFriend).success(function(res){
+      $http.post('/friends/new/'+user._id, newFriend).success(function(res){
         console.log("new friend adding", newFriend)
         console.log(res, "response")
-       $location.path('/');
-        callback()
+        if (res.status === false){
+          _this.error = res.error;
+        } else {
+         $location.path('/main');
+          callback()
+        }
       });
     }
-    factory.showFriends = function( user, callback){
-      console.log("sending request to server to find firends list for user", user);
-      $http.get('/friendsList/'+ user).success(function(res){
+    factory.showFriends = function(userId, callback){
+      console.log("sending request to server to find firends list for user", userId);
+      $http.get('/friends/'+ userId).success(function(res){
         console.log("get back the friend list", res);
         callback(res);
        // $location.path('/');
@@ -94,7 +98,7 @@
     }
     factory.logout = function(callback){
       this.user = undefined
-      $location.path('#/')
+      $location.path('/')
       callback()
     }
     factory.getUser = function(){

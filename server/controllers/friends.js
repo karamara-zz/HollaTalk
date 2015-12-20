@@ -1,33 +1,19 @@
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
+// var users = require('./users.js');
 module.exports = (function() {
 	return {
 	show: function(req,res){
-		// console.log("fetching friend list for "+ req.params.userPhoneNumber);
-		var userNumber = req.params.userPhoneNumber
-		User.findOne({phoneNumber: userNumber})
+		console.log("fetching friend list for "+ req.params);
+		console.log(req.params);
+		User.findOne({_id: req.params.id})
 		.populate('friends')
-		.exec(function (err, friendsList){
-			if (err){
-				// console.log("there was error populating friendsList");
+		.exec(function (err, user){
+			if (user){
+				// console.log("friends list successfully populated", user);
+				res.json({friends: user.friends});
 			} else {
-				// console.log("friends list successfully populated", friendsList);
-				res.json(friendsList);
-			}
-		})
-	},
-	logIn: function(req, res){
-		console.log(req.body);
-		User.findOne({phoneNumber : req.body.phoneNumber, password: req.body.password}, function(err, user){
-			if (user) {
-				req.session.user = user;
-				console.log(req.session);
-				user.session = req.session
-				res.json({status: true, response: user});
-			} else if (err){
-				res.json({status: false, error: err});
-			} else {
-				res.json({status: false, error: "login credencial doesn't match the database."})
+				console.log("there was error");
 			}
 		})
 	},
@@ -50,98 +36,46 @@ module.exports = (function() {
 			}
 		})
 	},
-	updateSocketID: function(data, callback){
-		// console.log(data);
-		// User.findOne({phoneNumber:data.phoneNumber}, function(err, user){
-		// 	if (err){
-		// 		console.log("there was error");
-		// 	} else {
-		// 		user.cSocketID = data.cSocketID;
-		// 		user.save(function(err){
-		// 			if(err){
-		// 				console.log("there was error");
-
-		// 			} else {
-		// 				console.log("Socket updated");
-		// 			}
-		// 		})
-		// 	}
-		// })
-		//trying to use update
-		//
-		User.update({phoneNumber:data.phoneNumber}, {cSocketID: data.cSocketID}, function(err, user){
-			if (err){
-				console.log("there was error", err)
-			} else {
-				console.log("socket updated", user)
-				callback()
-			}
-		})
-
-	},
-	disconnectSocket: function(socketID){
-		console.log(socketID);
-		User.findOne({cSocketID: socketID}, function(err, userData){
-			if (err){
-				console.log("there was error")
-			} else if (userData) {
-				userData.cSocketID = undefined;
-				userData.save(function(err){
-					if(err){
-						console.log("there was error");
-
-					} else {
-						console.log("Socket disconnected");
-						for (var friend = 0; friend < userData.friends.length; friend++){
-
-							if (userData.friends[friend].cSocketID){
-								var friendSocketID = userData.friends[friend].cSocketID;
-								console.log("emitting to friend", friendSocketID)
-								if (io.sockets.connected[friendSocketID]){
-									console.log("emitting")
-									io.sockets.connected[friendSocketID].emit('updateFriendList', userData)
-								}
-							}
-							console.log(1, userData.friends[friend].cSocketID, friend, userData.friends.length)
-						}
-					}
-				})
-			} else {
-				console.log("could not find the user with the socketID")
-			}
-		})
-	},
 	create: function(req, res){
 		// console.log("adding "+ req.body.friendPhoneNumber+ " as a friend of "+ req.body.phoneNumber) ; 
-		User.findOne({phoneNumber: req.body.friendPhoneNumber}, function(err, friend){
-			console.log("////////////////////////////////////////", req.session)
-			// console.log(friend, "friend returned by finding one");
+		User.findOne({phoneNumber: req.body.phoneNumber}, function(err, friend){
+			console.log(friend, "friend returned by finding one");
 			if (err || friend === null){
-				// console.log("there was error")
+				console.log("there was error",err, friend)
 				res.json({status: false, error: "the friend does not exist"})
 
 			} else {
-				// console.log("the friend found adding a friend to the user")
-				User.findOne({phoneNumber: req.body.phoneNumber}, function(err, user){
+				console.log("the friend found adding a friend to the user")
+				User.findOne({_id: req.params.id}, function(err, user){
 					if (err){
-						// console.log("there was error finding user")
+						console.log("there was error finding user", err)
 					} else {
-						// console.log("user found");
-						user.friends.push(friend);
-						user.save(function(err){
-							if (err){
-								// console.log("error");
- 							} else {
- 								res.json({status: true});
- 							}
-						})
+						console.log("user found");
+						for (var idx = 0; idx < user.friends.length; idx++){
+							console.log("finding if friend already exist")
+							console.log(user.friends[idx],"friends id",friend._id)
+							if (String(user.friends[idx]) == String(friend._id)){
+
+								var friendExist = true;
+							}
+						}
+						if (!friendExist){
+							user.friends.push(friend);
+							user.save(function(err){
+								if (err){
+									console.log("error");
+	 							} else {
+	 								res.json({status: true});
+	 							}
+							})
+						} else {
+							res.json({status: false, error: "friend already exists in the friend list of the user"})
+						}
 					}
 				})
 			}
 		})
-	},
-	session: function(req, res){
-		res.json(req.session)
 	}
+
 }
 })()
