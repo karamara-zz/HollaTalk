@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
-// var users = require('./users.js');
+var users = require('./users.js');
 module.exports = (function() {
 	return {
 	show: function(req,res){
@@ -11,7 +11,7 @@ module.exports = (function() {
 		.exec(function (err, user){
 			if (user){
 				// console.log("friends list successfully populated", user);
-				res.json({friends: user.friends});
+				res.json({status: true, user: user});
 			} else {
 				console.log("there was error");
 			}

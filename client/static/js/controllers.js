@@ -71,8 +71,9 @@ hollaApp.controller('createController', function(CreateFactory){
     this.showFriends = function(userId){
       console.log("fetching friends for id", userId);
       UserFactory.showFriends(userId, function(res){
-        console.log(res);
-        _this.friendsList = res.friends
+        console.log(res, "res");
+        _this.user = res.user;
+        _this.friendsList = res.user.friends
         // do something when got the firend list
         // if you use "this" here, it refers to factory, you need to refer controller
         console.log(_this.friendsList)
@@ -82,7 +83,7 @@ hollaApp.controller('createController', function(CreateFactory){
     this.showFriends(this.user._id)
     this.updateSocketId = function(){
       console.log("emitting to socket to update socktID", this.user)
-      socket.emit("updateSocketID", this.friendsList);
+      socket.emit("updateSocketID", this.user);
     }
     this.startChat = function(friend){
       console.log(friend);

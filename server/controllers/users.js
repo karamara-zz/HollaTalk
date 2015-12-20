@@ -94,32 +94,33 @@ module.exports = (function() {
 		})
 	},
 	updateSocketID: function(data, callback){
-		// console.log(data);
-		// User.findOne({phoneNumber:data.phoneNumber}, function(err, user){
-		// 	if (err){
-		// 		console.log("there was error");
-		// 	} else {
-		// 		user.cSocketID = data.cSocketID;
-		// 		user.save(function(err){
-		// 			if(err){
-		// 				console.log("there was error");
-
-		// 			} else {
-		// 				console.log("Socket updated");
-		// 			}
-		// 		})
-		// 	}
-		// })
-		//trying to use update
-		//
-		User.update({phoneNumber:data.phoneNumber}, {cSocketID: data.cSocketID}, function(err, user){
+		console.log(data);
+		User.findOne({phoneNumber:data.phoneNumber}, function(err, user){
 			if (err){
-				console.log("there was error", err)
+				console.log("there was error");
 			} else {
-				console.log("socket updated", user)
-				callback()
+				user.cSocketID = data.cSocketID;
+				user.save(function(err){
+					if(err){
+						console.log("there was error");
+
+					} else {
+						console.log("Socket updated");
+					}
+				})
+				callback(user);
 			}
 		})
+		// trying to use update
+		
+		// User.update({phoneNumber:data.phoneNumber}, {cSocketID: data.cSocketID}, function(err, user){
+		// 	if (err){
+		// 		console.log("there was error", err)
+		// 	} else {
+		// 		console.log("socket updated", user)
+		// 		callback()
+		// 	}
+		// })
 
 	},
 	disconnectSocket: function(socketID){

@@ -32,13 +32,13 @@ io.sockets.on('connection', function(socket){
 		console.log(data, "data");
 
 		// this will update the socket Id in the databas and emit to all the users' friend to update their friend online list.
-		users.updateSocketID(data, function(){
-			console.log(data, "updating socket id of user in user's friends",data.length)
-			for (var idx = 0; idx < data.length; idx++){
-				console.log("for loop",data[0])
-				if (data[idx].cSocketID){
+		users.updateSocketID(data, function(user){
+			console.log(user, "updating socket id of user in user's friends", data)
+			for (var idx = 0; idx < user.friends.length; idx++){
+				console.log("for loop",data.friends[0])
+				if (data.friends[idx].cSocketID){
 					console.log("ifstatement")
-					var friendSocketID = data[idx].cSocketID;
+					var friendSocketID = data.friends[idx].cSocketID;
 					console.log("emitting to idx", friendSocketID)
 					if (io.sockets.connected[friendSocketID]){
 						console.log("emitting")
