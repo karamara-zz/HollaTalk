@@ -98,7 +98,8 @@
     }
     factory.logout = function(callback){
       this.user = undefined
-      $location.path('/')
+      // $location.path('/')
+
       callback()
     }
     factory.getUser = function(){

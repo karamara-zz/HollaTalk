@@ -18,6 +18,9 @@ hollaApp.factory('socket',function($rootScope){
             }
           });
         })
+      },
+      disconnect: function(callback){
+        socket.disconnect();
       }
     };
   });

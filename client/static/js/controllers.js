@@ -17,7 +17,7 @@ hollaApp.controller('createController', function(CreateFactory){
   }
 })
   
-  hollaApp.controller('loginController', function(UserFactory){
+  hollaApp.controller('loginController', function(UserFactory, socket){
     var _this = this;
     console.log("login controller on")
     // if there is session, then loggs user in
@@ -42,8 +42,10 @@ hollaApp.controller('createController', function(CreateFactory){
       });
     this.logout = function(){
       console.log("logging out");
+      socket.disconnect();
       UserFactory.logout(function(){
         _this.user = undefined;
+        window.location = "/";
       });
     }
     };// end of login method
@@ -63,7 +65,7 @@ hollaApp.controller('createController', function(CreateFactory){
     })
     socket.on('updateFriendList', function(data){
       console.log("a friend logged in updating friend list now", _this.user.friends);
-      _this.showFriends(_this.user.phoneNumber, function(){
+      _this.updateFriendsList(_this.user._id, function(){
         console.log("friend list updated to ", _this.friendsList)
       })
       // _this.friendsList = _this.user.friends;
@@ -78,6 +80,17 @@ hollaApp.controller('createController', function(CreateFactory){
         // if you use "this" here, it refers to factory, you need to refer controller
         console.log(_this.friendsList)
         _this.updateSocketId()
+      })
+    };
+    this.updateFriendsList = function(userId){
+      console.log("fetching friends for id", userId);
+      UserFactory.showFriends(userId, function(res){
+        console.log(res, "res");
+        _this.user = res.user;
+        _this.friendsList = res.user.friends
+        // do something when got the firend list
+        // if you use "this" here, it refers to factory, you need to refer controller
+        console.log(_this.friendsList)
       })
     };
     this.showFriends(this.user._id)
