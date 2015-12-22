@@ -13,6 +13,9 @@ module.exports = function(app){
 		console.log("post request for session called", req.body);
 		users.session(req, res);
 	})
+	app.get('/killSession', function(req, res){
+		users.destroySession(req,res);
+	})
 
 	//friends routes
 	//

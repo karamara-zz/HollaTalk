@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
+var session = require('express-session');
 module.exports = (function() {
 	return {
 	create : function(req, res){
@@ -181,6 +182,14 @@ module.exports = (function() {
 						})
 					}
 				})
+			}
+		})
+	},
+	destroySession: function(req){
+		console.log("function destory session", req.session)
+		req.session.destroy(function(err){
+			if (err){
+				console.log("there was error destroying the session");
 			}
 		})
 	},

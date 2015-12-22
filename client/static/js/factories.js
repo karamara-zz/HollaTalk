@@ -98,7 +98,9 @@
     }
     factory.logout = function(callback){
       this.user = undefined
-      // $location.path('/')
+      $http.get('/killSession').success(function(res){
+        console.log("killed session");
+      })
 
       callback()
     }
