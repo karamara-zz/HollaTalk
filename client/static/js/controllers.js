@@ -42,8 +42,9 @@ hollaApp.controller('createController', function(CreateFactory){
       });
     this.logout = function(){
       console.log("logging out");
-      socket.disconnect();
+
       UserFactory.logout(function(){
+        socket.disconnect();
         _this.user = undefined;
         window.location = "/";
       });
@@ -101,10 +102,8 @@ hollaApp.controller('createController', function(CreateFactory){
     this.startChat = function(friend){
       console.log(friend);
       ChatroomFactory.startChatroom(friend, function(res){
-        console.log('starting the chat with', friend)
-        if (friend.cSocketID){
-          ChatroomFactory.sendTo = friend.cSocketID
-        }
+        console.log('starting the chat with', friend);
+        ChatroomFactory.sendTo = friend;
       })
       socket.emit("startedChat", friend)
     }

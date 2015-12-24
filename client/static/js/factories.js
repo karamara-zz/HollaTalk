@@ -5,8 +5,10 @@
 // }
 // above three lines disabled for testing
   hollaApp.factory('ChatroomFactory', function($http, $location, socket){
+    this.chatroomInfo.sentFrom = user;
     console.log("chatroomFactory loading");
     var _this = this;
+
     var factory = {}
     socket.on('receiver', function(data){
       console.log("emit", data);
@@ -16,6 +18,11 @@
       console.log("send http request to get conversation with the friend and user using friend's phonenumber");
     }
     factory.startChatroom = function(friend, callback){
+      console.log("starting the chatroom with the friend",friend)
+      _this.chatroomInfo.sendTo = friend;
+      $http.post('/chatroom', chatroomInfo).success(function(){
+        console.log("post request successful")
+      })
       $location.path('/chatroom')
       callback()
     }
@@ -101,7 +108,6 @@
       $http.get('/killSession').success(function(res){
         console.log("killed session");
       })
-
       callback()
     }
     factory.getUser = function(){

@@ -8,7 +8,7 @@ module.exports = function(app){
 	// app.get('/',function(req,res){
 	// 	console.log("home");
 	// })
-
+	// These routes are in charge of log in and log out a user.
 	app.get('/session', function(req, res){
 		console.log("post request for session called", req.body);
 		users.session(req, res);
@@ -17,7 +17,7 @@ module.exports = function(app){
 		users.destroySession(req,res);
 	})
 
-	//friends routes
+	//friends routes it will CRUD friend list of user with the id
 	//
 	app.get('/friends/:id', function(req,res){
 		friends.show(req,res);
@@ -62,7 +62,12 @@ module.exports = function(app){
 		console.log("logging in", req.body, req.session);
 		users.logIn(req, res);
 	});
+
+
 	// chat room routes
+	app.get('/chats', function(req, res){
+		chatrooms.index(req,res);
+	})
 	app.post('/chatroom', function(req, res){
 		console.log("new chatroom is being created");
 		chatrooms.create(req, res);

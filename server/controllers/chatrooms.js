@@ -2,6 +2,16 @@ var mongoose = require('mongoose');
 var Chatroom = mongoose.model("Chatroom");
 module.exports = (function(){
 	return{
+		index: function(req, res){
+			Chatroom.findOne({users: req.body.sendFrom, users:req.body.sendTo}, function(err, chatroom){
+				if (err) {
+					console.log("there was error finding the chatroom");
+					res.json({status: false, error: err});
+				} else {
+					res.json({status: true, chatroom: chatroom})
+				}
+			})
+		},
 		create: function(req, res){
 			// it will create the chatroom, when user first start the chat.. 
 			// to avoid extra work everytime a user message, there could be the status in the json file that will tell the system if there is chatroom alreay created. it coudl check on front end.

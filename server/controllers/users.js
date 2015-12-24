@@ -49,28 +49,28 @@ module.exports = (function() {
 		})
 	},
 	logIn: function(req, res){
-		console.log(req.body, "in users controller");
+		// console.log(req.body, "in users controller");
 		User.findOne({phoneNumber : req.body.phoneNumber}, function(err, user){
 			if (user) {
 				if (user.password == req.body.password){
 					req.session.user = user;
-					console.log(req.session, "valid log in sending back the user object with session included");
+					// console.log(req.session, "valid log in sending back the user object with session included");
 					user = {
 						name : user.name,
 						phoneNumber : user.phoneNumber,
 						_id : user._id
 					}
-					console.log("removed password", user)
+					// console.log("removed password", user)
 					res.json({status: true, user: user});
 				} else {
-					console.log("password doesn't match");
+					// console.log("password doesn't match");
 					res.json({status: false, error: "login credencial doesn't match the database."})
 				}
 			} else if (err){
-				console.log(err, "error retrieving user information for login")
+				// console.log(err, "error retrieving user information for login")
 				res.json({status: false, error: err});
 			} else {
-				console.log("there was no user")
+				// console.log("there was no user")
 				res.json({status: false, error: "there was no user found on the database"})
 			}
 		})
@@ -94,19 +94,43 @@ module.exports = (function() {
 			}
 		})
 	},
+	disconnectSocket: function(socketId,callback){
+		// console.log("fetching friend list for "+ req.params.userPhoneNumber);
+		User.findOne({cSocketID: socketId})
+		.populate('friends')
+		.exec(function(err, user){
+			if (err){
+				// console.log("there was error");
+			} else if (user){
+				user.cSocketID = undefined;
+				user.save(function(err){
+					if(err){
+						// console.log("there was error");
+
+					} else {
+						// console.log("Socket updated");
+					}
+				})
+				callback(user);
+			} else {
+				// console.log("user not found with socket id")
+			}
+		})
+	},
 	updateSocketID: function(data, callback){
-		console.log(data);
+		// console.log(data);
 		User.findOne({phoneNumber:data.phoneNumber}, function(err, user){
 			if (err){
-				console.log("there was error");
+				// console.log("there was error");
 			} else {
 				user.cSocketID = data.cSocketID;
 				user.save(function(err){
 					if(err){
-						console.log("there was error");
+						// console.log("there was error");
 
 					} else {
-						console.log("Socket updated");
+						// console.log("Socket updated");
+						callback(user);
 					}
 				})
 				callback(user);
@@ -124,42 +148,42 @@ module.exports = (function() {
 		// })
 
 	},
-	disconnectSocket: function(socketID){
-		console.log(socketID);
-		User.findOne({cSocketID: socketID}, function(err, userData){
-			if (err){
-				console.log("there was error")
-			} else if (userData) {
-				userData.cSocketID = undefined;
-				userData.save(function(err){
-					if(err){
-						console.log("there was error");
+	// disconnectSocket: function(socketID, callback){
+	// 	console.log(socketID);
+	// 	User.findOne({cSocketID: socketID}, function(err, userData){
+	// 		if (err){
+	// 			console.log("there was error")
+	// 		} else if (userData) {
+	// 			userData.cSocketID = undefined;
+	// 			userData.save(function(err){
+	// 				if(err){
+	// 					console.log("there was error");
 
-					} else {
-						console.log("Socket disconnected");
-						for (var friend = 0; friend < userData.friends.length; friend++){
-
-							if (userData.friends[friend].cSocketID){
-								var friendSocketID = userData.friends[friend].cSocketID;
-								console.log("emitting to friend", friendSocketID)
-								if (io.sockets.connected[friendSocketID]){
-									console.log("emitting")
-									io.sockets.connected[friendSocketID].emit('updateFriendList', userData)
-								}
-							}
-							console.log(1, userData.friends[friend].cSocketID, friend, userData.friends.length)
-						}
-					}
-				})
-			} else {
-				console.log("could not find the user with the socketID")
-			}
-		})
-	},
+	// 				} else {
+	// 					console.log("Socket disconnected", userData);
+	// 					callback(userData);
+	// 					for (var friend = 0; friend < userData.friends.length; friend++){
+	// 						if (userData.friends[friend].cSocketID){
+	// 							var friendSocketID = userData.friends[friend].cSocketID;
+	// 							console.log("emitting to friend", friendSocketID)
+	// 							if (io.sockets.connected[friendSocketID]){
+	// 								console.log("emitting")
+	// 								io.sockets.connected[friendSocketID].emit('updateFriendList', userData)
+	// 							}
+	// 						}
+	// 						console.log(1, userData.friends[friend].cSocketID, friend, userData.friends.length)
+	// 					}
+	// 				}
+	// 			})
+	// 		} else {
+	// 			console.log("could not find the user with the socketID")
+	// 		}
+	// 	})
+	// },
 	addFriend: function(req, res){
 		// console.log("adding "+ req.body.friendPhoneNumber+ " as a friend of "+ req.body.phoneNumber) ; 
 		User.findOne({phoneNumber: req.body.friendPhoneNumber}, function(err, friend){
-			console.log("////////////////////////////////////////", req.session)
+			// console.log("////////////////////////////////////////", req.session)
 			// console.log(friend, "friend returned by finding one");
 			if (err || friend === null){
 				// console.log("there was error")
@@ -186,10 +210,10 @@ module.exports = (function() {
 		})
 	},
 	destroySession: function(req){
-		console.log("function destory session", req.session)
+		// console.log("function destory session", req.session)
 		req.session.destroy(function(err){
 			if (err){
-				console.log("there was error destroying the session");
+				// console.log("there was error destroying the session");
 			}
 		})
 	},

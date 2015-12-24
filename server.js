@@ -4,7 +4,6 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
-
 //session
 var session = require('express-session');
 app.use(session({
@@ -20,6 +19,11 @@ var server = app.listen(app.get('port'), function() {
 	console.log("temporaly Holla at port: 7000")
 });
 var users = require('./server/controllers/users.js');
+
+
+// sockets
+// 
+
 var io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket){
 	console.log("socket connected", socket.id);
@@ -49,8 +53,23 @@ io.sockets.on('connection', function(socket){
 		});
 
 	});
-	socket.on('disconnect', function(){
-		users.disconnectSocket(socket.id);
+	socket.on('disconnect', function(user){
+		console.log(socket.id, " disconected a socket with this id", user)
+		users.disconnectSocket(socket.id, function(user){
+			console.log(user, "updating socket id of user in user's friends", user)
+			for (var idx = 0; idx < user.friends.length; idx++){
+				console.log("for loop",user.friends[0])
+				if (user.friends[idx].cSocketID){
+					console.log("ifstatement")
+					var friendSocketID = user.friends[idx].cSocketID;
+					console.log("emitting to idx", friendSocketID)
+					if (io.sockets.connected[friendSocketID]){
+						console.log("emitting")
+						io.sockets.connected[friendSocketID].emit('updateFriendList', user)
+					}
+				}
+			}
+		});
 	});
 	socket.on('sendMessageToServer', function(data){
 		console.log("sendmessage",data,"from socket id ",socket.id)
