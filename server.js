@@ -22,7 +22,6 @@ var users = require('./server/controllers/users.js');
 
 
 // sockets
-// 
 
 var io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket){
