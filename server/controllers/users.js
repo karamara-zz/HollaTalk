@@ -233,12 +233,13 @@ module.exports = (function() {
 					console.log(user)
 					for (friend in user.friends){
 						if (user.friends[friend]._id == data.sendTo._id){
-						friend.newMessage = true;
+						user.friends[friend].newMessage = true;
+						console.log(user.friends[friend], "changed the newmessages status of friend");
 							user.save(function(err){
 								if (err){
 									console.log("there was error", err);
 								} else {
-									cosole.log("user's newMessage status successfully updated");
+									console.log("user's newMessage status successfully updated");
 								}
 							})
 						}

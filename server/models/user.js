@@ -20,13 +20,16 @@ var UserSchema = new mongoose.Schema({
 	phoneNumber: Number,
 	friends: [{
 			type: Schema.Types.ObjectId,
-			ref: 'User'
+			ref: 'User',
 		}],
 	chatrooms: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Chatroom'
 	}],
-	newMessage: Boolean
+	newMessage: {
+		type: Boolean,
+		default: false
+	}
 });
 mongoose.model('User',UserSchema);
 UserSchema.path('phoneNumber').required(true);
