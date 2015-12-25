@@ -20,7 +20,6 @@ var chatroomSchema = new mongoose.Schema({
 
 });
 mongoose.model('Chatroom',chatroomSchema);
-chatroomSchema.path('messages').required(true);
 
 
 //chat room that will save messages. it i will have two to many relationship with user. 

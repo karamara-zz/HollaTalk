@@ -5,11 +5,12 @@
 // }
 // above three lines disabled for testing
   hollaApp.factory('ChatroomFactory', function($http, $location, socket){
-    this.chatroomInfo.sentFrom = user;
-    console.log("chatroomFactory loading");
+    var factory = {}
+    factory.chatroomInfo={};
+    factory.chatroomInfo.sentFrom = user;
+    console.log("chatroomFactory loading", factory.chatroomInfo);
     var _this = this;
 
-    var factory = {}
     socket.on('receiver', function(data){
       console.log("emit", data);
       _this.sendTo = data.cSocketID;
@@ -18,18 +19,24 @@
       console.log("send http request to get conversation with the friend and user using friend's phonenumber");
     }
     factory.startChatroom = function(friend, callback){
-      console.log("starting the chatroom with the friend",friend)
-      _this.chatroomInfo.sendTo = friend;
-      $http.post('/chatroom', chatroomInfo).success(function(){
-        console.log("post request successful")
+      console.log("starting the chatroom with the friend",friend, factory.chatroomInfo, _this)
+      factory.chatroomInfo.sendTo = friend;
+      $http.post('/chatroom', factory.chatroomInfo).success(function(chatroomData){
+        console.log("post request successful", chatroomData)
+        factory.chatroomData = chatroomData.chatroom;
+        $location.path('/chatroom')
       })
-      $location.path('/chatroom')
       callback()
     }
     factory.sendMessage = function(message){
-      console.log(message,"sending to", this.sendTo, "send message factory");
-      var newMessage ;
-      console.log(this.user.Id)
+      console.log(message,"sending to", factory.chatroomData, "send message factory");
+      var newMessage = {
+        sender: user._id,
+        message: message
+      }
+      $http.put('/chatroom/'+factory.chatroomData._id, newMessage).success(function(){
+        console.log("message updated in database")
+      })
 
     }
     return factory;

@@ -1,14 +1,28 @@
 var mongoose = require('mongoose');
 var Chatroom = mongoose.model("Chatroom");
+console.log("chatroom controller loaded")
 module.exports = (function(){
 	return{
-		index: function(req, res){
+		show: function(req, res){
+			console.log(req.body)
 			Chatroom.findOne({users: req.body.sendFrom, users:req.body.sendTo}, function(err, chatroom){
 				if (err) {
 					console.log("there was error finding the chatroom");
 					res.json({status: false, error: err});
-				} else {
+				} else if (chatroom){
 					res.json({status: true, chatroom: chatroom})
+				} else {
+					var chatroomData = {
+						users: [ req.body.sentFrom, req.body.sendTo]
+					};
+					var newChatroom = new Chatroom(chatroomData);
+					newChatroom.save(function(err){
+						if (err){
+							console.log("there was error save new chatroom when there was no chatroom found",err)
+						} else {
+							res.json({status: true, chatroom: newChatroom});
+						}
+					})
 				}
 			})
 		},
@@ -63,17 +77,13 @@ module.exports = (function(){
 		}, //end of the create method
 		update: function(req, res){
 			// need req.body to contain { chatroomId : _id , message: String , sender: String(user id)}
-			console.log("updating the chatroom id ", req.params);
-			var newMessage = {
-				sender: req.body.sender,
-				message: req.body.message
-			}
-			Chatroom.findOne({_id : req.params}, function(err, chatroom){
+			console.log("updating the chatroom id ", req.params, "adding", req.body);
+			Chatroom.findOne({_id : req.params.id}, function(err, chatroom){
 				if (err) {
 					console.log("there was error finding chatroom");
 				} else {
 					var tempArr = chatroom.messages;
-					tempArr.push(newMessage);
+					tempArr.push(req.body);
 					chatroom.messages = tempArr;
 					chatroom.save(function(err){
 						if (err){
@@ -87,4 +97,4 @@ module.exports = (function(){
 			});
 		}// end of update method
 	};// end of the return object
-});
+})()

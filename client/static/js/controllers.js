@@ -103,7 +103,6 @@ hollaApp.controller('createController', function(CreateFactory){
       console.log(friend);
       ChatroomFactory.startChatroom(friend, function(res){
         console.log('starting the chat with', friend);
-        ChatroomFactory.sendTo = friend;
       })
       socket.emit("startedChat", friend)
     }
@@ -124,6 +123,8 @@ hollaApp.controller('createController', function(CreateFactory){
 hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory, socket){
   //controller for chat room
   var _this = this
+  console.log(ChatroomFactory.chatroomInfo);
+  this.chatroomInfo = ChatroomFactory.chatroomInfo;
   this.conversation = [''];
   socket.on('message', function(message){
     console.log("message", message);
@@ -132,18 +133,34 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory,
     console.log(_this.conversation);
   })
   this.test = "dsfdf";
+  this.getChatData = function(){
+    _this.conversation = ChatroomFactory.chatroomData.messages;
+    for (idx = 0 ; idx < _this.conversation.length ; idx++){
+      if (_this.conversation[idx].sender == user._id){
+        _this.conversation[idx].from = "self";
+        _this.conversation[idx].name = _this.chatroomInfo.sentFrom.name;
+      } else {
+        _this.conversation[idx].from = "friend";
+        _this.conversation[idx].name = _this.chatroomInfo.sendTo.name;
+      }
+    }
+    console.log(_this.conversation, user._id)
+  }
+  this.getChatData()
   this.sendMessage = function(){
     console.log(this.message);
+    console.log(ChatroomFactory.chatroomInfo);
     ChatroomFactory.sendMessage(this.message, function(res){
     });
     this.message.sendTo = ChatroomFactory.sendTo
     var messageData = {
       message: this.message,
-      sendTo: ChatroomFactory.sendTo,
-      sentFrom: user.cSocketID
+      sendTo: _this.chatroomInfo.sendTo,
+      sentFrom: _this.chatroomInfo.sentFrom
     }
     socket.emit("sendMessageToServer", messageData)
     messageData.from = "self";
+    messageData.name = _this.chatroomInfo.sentFrom.name;
     _this.conversation.push(messageData);
     this.message = "";
   }

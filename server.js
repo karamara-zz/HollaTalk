@@ -72,10 +72,10 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('sendMessageToServer', function(data){
 		console.log("sendmessage",data,"from socket id ",socket.id)
-		if(data.sendTo){
-			if (io.sockets.connected[data.sendTo]){
-				console.log("really emitting the message to ", data.sendTo)
-				io.sockets.connected[data.sendTo].emit('message', data);
+		if(data.sendTo.cSocketID){
+			if (io.sockets.connected[data.sendTo.cSocketID]){
+				console.log("really emitting the message to ", data.sendTo.cSocketID)
+				io.sockets.connected[data.sendTo.cSocketID].emit('message', data);
 			}
 		}
 

@@ -1,9 +1,9 @@
 <div id='chatroom'>
-	<h1>Chat with the friend</h1>
+	<h1 ng-bind= "chatCtrl.chatroomInfo.sendTo.name">Chat with the friend</h1>
 	<div id='messageContainer'>
 		<div id="messages">
 			<div ng-repeat="message in chatCtrl.conversation" class = "row message">
-				<p ng-bind = "message.message" class = {{message.from}}></p>
+				<div class = {{message.from}}><p><span ng-bind="message.name"></span> : </p><p ng-bind = "message.message" ></p></div>
 			</div>
 		</div>
 		<form novalidate>

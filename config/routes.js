@@ -1,5 +1,5 @@
 var users = require('./../server/controllers/users.js');
-var chatrooms = require('./../server/controllers/chatrooms');
+var chatrooms = require('./../server/controllers/chatrooms.js');
 var friends = require('./../server/controllers/friends.js');
 console.log("routes")
 // these redirects the http request to the controller so it can save to mongoDB using model.
@@ -62,19 +62,22 @@ module.exports = function(app){
 		console.log("logging in", req.body, req.session);
 		users.logIn(req, res);
 	});
-
-
 	// chat room routes
-	app.get('/chats', function(req, res){
-		chatrooms.index(req,res);
+	// app.get('/chatroom', function(req, res){
+	// 	req.body;
+	// 	chatrooms.show(req,res);
+	// })
+	app.put('/chatroom/:id', function(req,res){
+		console.log(req .body, " this is chatroom message update route", req.params.id)
+		chatrooms.update(req, res);
 	})
 	app.post('/chatroom', function(req, res){
 		console.log("new chatroom is being created");
-		chatrooms.create(req, res);
+		chatrooms.show(req, res);
 	});
-	app.put('/chatroom/:id', function(req, res){
-		console.log("new message is being updated");
-		chatrooms.update(req, res);
-	});
+	// app.put('/chatroom/:id', function(req, res){
+	// 	console.log("new message is being updated");
+	// 	chatrooms.update(req, res);
+	// });
 
 }
