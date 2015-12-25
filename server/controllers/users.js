@@ -136,50 +136,7 @@ module.exports = (function() {
 				callback(user);
 			}
 		})
-		// trying to use update
-		
-		// User.update({phoneNumber:data.phoneNumber}, {cSocketID: data.cSocketID}, function(err, user){
-		// 	if (err){
-		// 		console.log("there was error", err)
-		// 	} else {
-		// 		console.log("socket updated", user)
-		// 		callback()
-		// 	}
-		// })
-
 	},
-	// disconnectSocket: function(socketID, callback){
-	// 	console.log(socketID);
-	// 	User.findOne({cSocketID: socketID}, function(err, userData){
-	// 		if (err){
-	// 			console.log("there was error")
-	// 		} else if (userData) {
-	// 			userData.cSocketID = undefined;
-	// 			userData.save(function(err){
-	// 				if(err){
-	// 					console.log("there was error");
-
-	// 				} else {
-	// 					console.log("Socket disconnected", userData);
-	// 					callback(userData);
-	// 					for (var friend = 0; friend < userData.friends.length; friend++){
-	// 						if (userData.friends[friend].cSocketID){
-	// 							var friendSocketID = userData.friends[friend].cSocketID;
-	// 							console.log("emitting to friend", friendSocketID)
-	// 							if (io.sockets.connected[friendSocketID]){
-	// 								console.log("emitting")
-	// 								io.sockets.connected[friendSocketID].emit('updateFriendList', userData)
-	// 							}
-	// 						}
-	// 						console.log(1, userData.friends[friend].cSocketID, friend, userData.friends.length)
-	// 					}
-	// 				}
-	// 			})
-	// 		} else {
-	// 			console.log("could not find the user with the socketID")
-	// 		}
-	// 	})
-	// },
 	addFriend: function(req, res){
 		// console.log("adding "+ req.body.friendPhoneNumber+ " as a friend of "+ req.body.phoneNumber) ; 
 		User.findOne({phoneNumber: req.body.friendPhoneNumber}, function(err, friend){
@@ -249,24 +206,6 @@ module.exports = (function() {
 				}
 
 			})
-		// data will be
-		// 
-		// { message: 'dsafdsf',
-  // sendTo: 
-  //  { _id: '567b42cf38a3f009e1f85354',
-  //    phoneNumber: 3107453638,
-  //    password: 'dkdkdkdkdk',
-  //    name: 'issac',
-  //    __v: 1,
-  //    chatrooms: [],
-  //    friends: [ '56751aa324a646116ec77bef' ],
-  //    updated_at: '2015-12-24T00:56:47.596Z',
-  //    created_at: '2015-12-24T00:56:47.596Z',
-  //    '$$hashKey': 'object:342' },
-  // sentFrom: 
-  //  { name: 'sung',
-  //    phoneNumber: 3107453637,
-  //    _id: '56751aa324a646116ec77bef' } }
 	}
 }
 })()

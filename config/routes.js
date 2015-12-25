@@ -4,6 +4,7 @@ var friends = require('./../server/controllers/friends.js');
 console.log("routes")
 // these redirects the http request to the controller so it can save to mongoDB using model.
 // // it would be good idea to make RESTful route for friend and the user.!!
+
 module.exports = function(app){
 	// app.get('/',function(req,res){
 	// 	console.log("home");
@@ -55,13 +56,15 @@ module.exports = function(app){
 	// .put('/users/:id', function(req, res){
 	// 	//update the user information won't use it for now.
 	// });
-	app.delete('users/:id', function(req, res) {
+	// app.delete('users/:id', function(req, res) {
 		// delete the user available when admin feature is built
-	});
+	// });
 	app.post('/logIn', function(req,res){
 		console.log("logging in", req.body, req.session);
 		users.logIn(req, res);
 	});
+
+
 	// chat room routes
 	// app.get('/chatroom', function(req, res){
 	// 	req.body;
@@ -75,9 +78,4 @@ module.exports = function(app){
 		console.log("new chatroom is being created");
 		chatrooms.show(req, res);
 	});
-	// app.put('/chatroom/:id', function(req, res){
-	// 	console.log("new message is being updated");
-	// 	chatrooms.update(req, res);
-	// });
-
 }
