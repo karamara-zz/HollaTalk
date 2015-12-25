@@ -129,6 +129,7 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory,
   socket.on('message', function(message){
     console.log("message", message);
     message.from = "friend";
+    message.name = _this.chatroomInfo.sendTo.name;
     _this.conversation.push(message)
     console.log(_this.conversation);
   })

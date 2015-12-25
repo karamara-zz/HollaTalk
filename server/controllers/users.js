@@ -209,6 +209,8 @@ module.exports = (function() {
 			}
 		})
 	},
+	// session 
+	
 	destroySession: function(req){
 		// console.log("function destory session", req.session)
 		req.session.destroy(function(err){
@@ -219,6 +221,51 @@ module.exports = (function() {
 	},
 	session: function(req, res){
 		res.json(req.session)
+	},
+	// message sent to offline user
+	offlineSocket: function(data){
+		User.findOne({_id: data.sentFrom._id})
+			.populate('friends')
+			.exec(function(err, user){
+				if (err){
+					console.log("there was error", err)
+				} else if (user) {
+					console.log(user)
+					for (friend in user.friends){
+						if (user.friends[friend]._id == data.sendTo._id){
+						friend.newMessage = true;
+							user.save(function(err){
+								if (err){
+									console.log("there was error", err);
+								} else {
+									cosole.log("user's newMessage status successfully updated");
+								}
+							})
+						}
+					}
+				} else {
+					console.log("could not find user")
+				}
+
+			})
+		// data will be
+		// 
+		// { message: 'dsafdsf',
+  // sendTo: 
+  //  { _id: '567b42cf38a3f009e1f85354',
+  //    phoneNumber: 3107453638,
+  //    password: 'dkdkdkdkdk',
+  //    name: 'issac',
+  //    __v: 1,
+  //    chatrooms: [],
+  //    friends: [ '56751aa324a646116ec77bef' ],
+  //    updated_at: '2015-12-24T00:56:47.596Z',
+  //    created_at: '2015-12-24T00:56:47.596Z',
+  //    '$$hashKey': 'object:342' },
+  // sentFrom: 
+  //  { name: 'sung',
+  //    phoneNumber: 3107453637,
+  //    _id: '56751aa324a646116ec77bef' } }
 	}
 }
 })()

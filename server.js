@@ -77,6 +77,10 @@ io.sockets.on('connection', function(socket){
 				console.log("really emitting the message to ", data.sendTo.cSocketID)
 				io.sockets.connected[data.sendTo.cSocketID].emit('message', data);
 			}
+		} else {
+			// if the reciever is offline
+			console.log(data, "user is offline");
+			users.offlineSocket(data)
 		}
 
 	})
