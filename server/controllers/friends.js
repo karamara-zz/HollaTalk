@@ -7,7 +7,11 @@ module.exports = (function() {
 		// console.log("fetching friend list for "+ req.params);
 		// console.log(req.params);
 		User.findOne({_id: req.params.id})
-		.populate('friends')
+		.populate({
+			path: 'friends',
+			populate: {path: 'friend'}
+			}
+			)
 		.exec(function (err, user){
 			if (user){
 				console.log("friends list successfully populated", user);

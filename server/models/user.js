@@ -19,9 +19,15 @@ var UserSchema = new mongoose.Schema({
 	cSocketID: String,
 	phoneNumber: Number,
 	friends: [{
+		friend: {
 			type: Schema.Types.ObjectId,
 			ref: 'User'
-		}],
+			},
+			newMessage: {
+				type: Boolean,
+				default: false
+			}
+	}],
 	chatrooms: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Chatroom'
