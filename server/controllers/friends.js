@@ -64,7 +64,11 @@ module.exports = (function() {
 							}
 						}
 						if (!friendExist){
-							user.friends.push(friend);
+							var friendData = {
+								friend: friend,
+								newMessage: false
+							}
+							user.friends.push(friendData);
 							user.save(function(err){
 								if (err){
 									// console.log("error");

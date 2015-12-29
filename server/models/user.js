@@ -33,8 +33,8 @@ var UserSchema = new mongoose.Schema({
 		ref: 'Chatroom'
 	}],
 	newMessage: {
-		type:Boolean,
-		default: false
+		type:Number,
+		default: 0
 	}
 });
 mongoose.model('User',UserSchema);
