@@ -1,7 +1,7 @@
 
 <div id="friendsList">
     <div ng-repeat="friends in usersCtrl.friendsList" ng-click="usersCtrl.startChat(friends.friend)">
-	    <img src="/android-icon-96x96.png" alt="profile image"><p><span ng-bind = "friends.friend.name"></span><i ng-show = "friends.friend.cSocketID" class="online small material-icons">visibility</i></p>
+    <img src="/android-icon-96x96.png" alt="profile image"><p><span ng-bind = "friends.friend.name"></span><i ng-show = "friends.friend.cSocketID" class="online small material-icons">visibility</i><span ng-show ="friends.newMessage">newMessage</span></p>
 <!--       <button ng-click="usersCtrl.startChat(friend)" class="waves-effect waves-light btn orange darken-4">Chat</button> -->
     </div>
 </div>

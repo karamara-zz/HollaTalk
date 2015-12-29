@@ -180,22 +180,27 @@ module.exports = (function() {
 		res.json(req.session)
 	},
 	// message sent to offline user
-	offlineSocket: function(data){
-		User.findOne({_id: data.sentFrom._id})
-			.populate('friends')
+	unread: function(data, callback){
+		User.findOne({_id: data.sendTo._id})
+			.populate({
+				path: 'friends',
+				populate: {path: 'friend'}
+			})
 			.exec(function(err, user){
+				console.log("populated user",user.friends[0].friend._id);
 				if (err){
 					console.log("there was error", err)
 				} else if (user) {
 					console.log(user)
-					for (friend in user.friends){
-						if (user.friends[friend]._id == data.sendTo._id){
-						user.friends[friend].newMessage = true;
-						console.log(user.friends[friend], "changed the newmessages status of friend");
+					for (var idx = 0; idx < user.friends.length; idx++){
+						if (user.friends[idx].friend._id == data.sentFrom._id){
+						user.friends[idx].newMessage++;
+						console.log(user.friends[idx], "changed the newmessages status of friend");
 							user.save(function(err){
 								if (err){
 									console.log("there was error", err);
 								} else {
+									callback()
 									console.log("user's newMessage status successfully updated");
 								}
 							})

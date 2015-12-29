@@ -65,8 +65,7 @@ module.exports = (function() {
 						}
 						if (!friendExist){
 							var friendData = {
-								friend: friend,
-								newMessage: false
+								friend: friend
 							}
 							user.friends.push(friendData);
 							user.save(function(err){
@@ -83,7 +82,31 @@ module.exports = (function() {
 				})
 			}
 		})
-	}
+	},
+	read: function(req, res){
+		// method that will update the read/unread status.
+		console.log("changing the status to read", req.body.sentFrom);
+		User.findOne({_id: req.params.id},function(err,user){
+			if (err) {
+				console.log("there was error", err)
+			} else if (user){
+				for (var idx = 0; idx < user.friends.length; idx++){
+					console.log("loop through friend list", user.friends[idx].friend, req.body.sendTo._id);
+					if (user.friends[idx].friend == req.body.sendTo._id){
+						user.friends[idx].newMessage = 0;
+						console.log(user.friends, "read status changed for this user")
+						user.save(function(err){
+							if (err){
+								console.log("there was error saving back the updated read status");
+							}
+						})
+					}
 
+				}
+			} else {
+				console.log("user not found")
+			}
+		})
+	}
 }
 })()

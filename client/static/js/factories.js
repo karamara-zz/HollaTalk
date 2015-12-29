@@ -25,8 +25,15 @@
         console.log("post request successful", chatroomData)
         factory.chatroomData = chatroomData.chatroom;
         $location.path('/chatroom')
+        factory.read();
       })
       callback()
+    }
+    factory.read = function(){
+      console.log("updating read status")
+      $http.put('/friends/read/'+factory.chatroomInfo.sentFrom._id, factory.chatroomInfo).success(function(){
+        console.log('read status updated');
+      })
     }
     factory.sendMessage = function(message){
       console.log(message,"sending to", factory.chatroomData, "send message factory");

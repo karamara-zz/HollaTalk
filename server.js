@@ -72,6 +72,7 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('sendMessageToServer', function(data){
 		console.log("sendmessage",data,"from socket id ",socket.id)
+		users.unread(data, function(){
 		if(data.sendTo.cSocketID){
 			if (io.sockets.connected[data.sendTo.cSocketID]){
 				console.log("really emitting the message to ", data.sendTo.cSocketID)
@@ -80,8 +81,9 @@ io.sockets.on('connection', function(socket){
 		} else {
 			// if the reciever is offline
 			console.log(data, "user is offline");
-			users.offlineSocket(data)
 		}
+		})
+
 
 	})
 })

@@ -96,5 +96,6 @@ module.exports = (function(){
 				};
 			});
 		}// end of update method
+
 	};// end of the return object
 })()

@@ -30,7 +30,9 @@ module.exports = function(app){
 	app.delete('/friends/:id', function(req, res) {
 		// delete a friend from the user's friends list
 	});
-
+	app.put('/friends/read/:id', function(req, res){
+		friends.read(req, res);
+	})
 
 	// user routes
     // Index

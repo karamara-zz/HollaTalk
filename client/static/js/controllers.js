@@ -132,6 +132,7 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory,
     message.name = _this.chatroomInfo.sendTo.name;
     _this.conversation.push(message)
     console.log(_this.conversation);
+    ChatroomFactory.read()
   })
   this.test = "dsfdf";
   this.getChatData = function(){
