@@ -97,7 +97,10 @@ module.exports = (function() {
 	disconnectSocket: function(socketId,callback){
 		// console.log("fetching friend list for "+ req.params.userPhoneNumber);
 		User.findOne({cSocketID: socketId})
-		.populate('friends')
+		.populate({
+			path: 'friends',
+			populate: {path: 'friend'}
+			})
 		.exec(function(err, user){
 			if (err){
 				// console.log("there was error");

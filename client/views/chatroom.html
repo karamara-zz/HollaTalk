@@ -1,7 +1,7 @@
 <div id='chatroom'>
 	<h1 ng-bind= "chatCtrl.chatroomInfo.sendTo.name">Chat with the friend</h1>
 	<div id='messageContainer'>
-		<div id="messages">
+		<div id="messages" scroll-bottom="chatCtrl.conversation">
 			<div ng-repeat="message in chatCtrl.conversation" class = "row message" id={{message._id}}>
 				<div class = {{message.from}}><p><span ng-bind="message.name"></span> : </p><p ng-bind = "message.message" ></p></div>
 			</div>

@@ -19,8 +19,8 @@
 <body>
 <div class = 'container row' ng-controller ="loginController as loginCtrl">
     <div id="header" class ="row" ng-show='loginCtrl.user'>
-      <a class = "col s2 waves-effect waves-light btn orange darken-4" href="#/main">Friend List</a>
-      <a class = "col s2 offset-s2 waves-effect waves-light btn orange darken-4" href="#/addFriend">Add friend</a>
+      <a class = "col s2 waves-effect waves-light btn orange darken-4" href="#/main" ng-click="loginCtrl.closeChatroom()">Friend List</a>
+      <a class = "col s2 offset-s2 waves-effect waves-light btn orange darken-4" href="#/addFriend" ng-click="loginCtrl.closeChatroom()">Add friend</a>
       <a class = "col s2 offset-s2 waves-effect waves-light btn indigo darken-1" ng-click="loginCtrl.logout()">Log out</a>
     </div> <!-- header ends  -->
     <div ng-view="">

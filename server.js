@@ -39,9 +39,9 @@ io.sockets.on('connection', function(socket){
 			console.log(user, "updating socket id of user in user's friends", data)
 			for (var idx = 0; idx < user.friends.length; idx++){
 				console.log("for loop",data.friends[0])
-				if (data.friends[idx].cSocketID){
+				if (data.friends[idx].friend.cSocketID){
 					console.log("ifstatement")
-					var friendSocketID = data.friends[idx].cSocketID;
+					var friendSocketID = data.friends[idx].friend.cSocketID;
 					console.log("emitting to idx", friendSocketID)
 					if (io.sockets.connected[friendSocketID]){
 						console.log("emitting")
@@ -58,9 +58,9 @@ io.sockets.on('connection', function(socket){
 			console.log(user, "updating socket id of user in user's friends", user)
 			for (var idx = 0; idx < user.friends.length; idx++){
 				console.log("for loop",user.friends[0])
-				if (user.friends[idx].cSocketID){
+				if (user.friends[idx].friend.cSocketID){
 					console.log("ifstatement")
-					var friendSocketID = user.friends[idx].cSocketID;
+					var friendSocketID = user.friends[idx].friend.cSocketID;
 					console.log("emitting to idx", friendSocketID)
 					if (io.sockets.connected[friendSocketID]){
 						console.log("emitting")
@@ -77,6 +77,7 @@ io.sockets.on('connection', function(socket){
 			if (io.sockets.connected[data.sendTo.cSocketID]){
 				console.log("really emitting the message to ", data.sendTo.cSocketID)
 				io.sockets.connected[data.sendTo.cSocketID].emit('message', data);
+				io.sockets.connected[data.sendTo.cSocketID].emit('newMessage', data);
 			}
 		} else {
 			// if the reciever is offline
