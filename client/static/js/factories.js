@@ -1,8 +1,12 @@
     var hollaApp = angular.module('hollaApp', ['ngRoute']);
     var user;
-//     if (!user){
-//   window.location.href="#/";
-// }
+function checklogin(){
+  console.log("checking if user exists", user)
+    if (!user){
+      window.location.href="#/";
+    }
+  }
+  checklogin();
 // above three lines disabled for testing
 hollaApp.directive('scrollBottom', function ($timeout) {
   return {

@@ -56,6 +56,7 @@ hollaApp.controller('loginController', function(UserFactory, socket){
   }// end of new user method
 }) // end of login controller
 hollaApp.controller('usersController', function(UserFactory, socket, ChatroomFactory) {
+  checklogin();
   ChatroomFactory.closeChatroom();
     var _this = this;
   this.user = window.user
@@ -174,6 +175,5 @@ hollaApp.controller('chatroomController', function(ChatroomFactory, UserFactory,
       this.message = "";
     }
   } // send Message method ends here
-
 })
 
