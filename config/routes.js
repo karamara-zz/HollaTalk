@@ -1,17 +1,17 @@
 var users = require('./../server/controllers/users.js');
 var chatrooms = require('./../server/controllers/chatrooms.js');
 var friends = require('./../server/controllers/friends.js');
-console.log("routes")
+//console.log("routes")
 // these redirects the http request to the controller so it can save to mongoDB using model.
 // // it would be good idea to make RESTful route for friend and the user.!!
 
 module.exports = function(app){
 	// app.get('/',function(req,res){
-	// 	console.log("home");
+	// 	//console.log("home");
 	// })
 	// These routes are in charge of log in and log out a user.
 	app.get('/session', function(req, res){
-		console.log("post request for session called", req.body);
+		//console.log("post request for session called", req.body);
 		users.session(req, res);
 	})
 	app.get('/killSession', function(req, res){
@@ -24,7 +24,7 @@ module.exports = function(app){
 		friends.show(req,res);
 	});
 	app.post('/friends/new/:id', function(req, res){
-		console.log("post to add new friend", req.body, req.params.id);
+		//console.log("post to add new friend", req.body, req.params.id);
 		friends.create(req,res)
 	});
 	app.delete('/friends/:id', function(req, res) {
@@ -62,7 +62,7 @@ module.exports = function(app){
 		// delete the user available when admin feature is built
 	// });
 	app.post('/logIn', function(req,res){
-		console.log("logging in", req.body, req.session);
+		//console.log("logging in", req.body, req.session);
 		users.logIn(req, res);
 	});
 
@@ -73,11 +73,11 @@ module.exports = function(app){
 	// 	chatrooms.show(req,res);
 	// })
 	app.put('/chatroom/:id', function(req,res){
-		console.log(req .body, " this is chatroom message update route", req.params.id)
+		//console.log(req .body, " this is chatroom message update route", req.params.id)
 		chatrooms.update(req, res);
 	})
 	app.post('/chatroom', function(req, res){
-		console.log("new chatroom is being created");
+		//console.log("new chatroom is being created");
 		chatrooms.show(req, res);
 	});
 }

@@ -50,7 +50,6 @@ io.sockets.on('connection', function(socket){
 				}
 			}
 		});
-
 	});
 	socket.on('disconnect', function(user){
 		console.log(socket.id, " disconected a socket with this id", user)
