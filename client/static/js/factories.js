@@ -8,6 +8,8 @@ function checklogin(){
   }
   checklogin();
 // above three lines disabled for testing
+// 
+
 hollaApp.directive('scrollBottom', function ($timeout) {
   return {
     scope: {
@@ -24,6 +26,8 @@ hollaApp.directive('scrollBottom', function ($timeout) {
   }
 })
 hollaApp.factory('ChatroomFactory', function($http, $location, socket){
+  // using counter site
+  $http.put('https://counter-by-site.herokuapp.com/counter', {site:'holla talk'})
   var factory = {}
   factory.chatroomInfo={};
   factory.chatroomInfo.sentFrom = user;
