@@ -26,8 +26,7 @@ hollaApp.directive('scrollBottom', function ($timeout) {
   }
 })
 hollaApp.factory('ChatroomFactory', function($http, $location, socket){
-  // using counter site
-  $http.put('https://counter-by-site.herokuapp.com/counter', {site:'holla talk'})
+
   var factory = {}
   factory.chatroomInfo={};
   factory.chatroomInfo.sentFrom = user;
@@ -95,6 +94,12 @@ hollaApp.factory('CreateFactory', function($http, $location){
   return factory;
 })
 hollaApp.factory('UserFactory', function($http, $location) {
+  // using counter site
+  // $http.post('https://localhost:8000/counter', {site:'holla talk'})
+  $http.post('https://counter-by-site.herokuapp.com/counter',{site:'holla talk'}).success(function(data){
+    console.log(data)
+  })
+
   console.log("factory at work")
   var factory = {};
   var _this = this;
